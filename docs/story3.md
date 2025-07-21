@@ -36,7 +36,21 @@
   - Result: Success, structure and documentation verified.
 
 - **Step 6: Structure Test Creation**
+
   - Date: July 22, 2025, 00:23 IST
   - Action: Created `tests/structure-check.js` and ran test.
   - Validation: Verified test exists and passes with `node tests/structure-check.js`.
   - Result: Success, folder structure verified.
+
+- **Step 7: Commit Changes**
+
+  - Date: July 22, 2025, 00:25 IST
+  - Action: Committed changes with message "Project folder structure setup".
+  - Validation: Verified commit with `git log -1 --pretty=%B`.
+  - Result: Success, commit completed.
+
+- **Step 8: README Update**
+  - Date: July 22, 2025, 00:26 IST
+  - Action: Created/updated `README.md` with Project Structure section linking to `docs/project-structure.md`.
+  - Validation: Verified content with `type README.md`.
+  - Result: Success, README updated correctly.
