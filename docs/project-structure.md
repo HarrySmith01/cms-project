@@ -1,0 +1,12 @@
+# Project Structure
+- src/
+  - entities/
+  - routes/
+  - services/
+  - seeders/
+  - utils/
+  - plugins/
+  - themes/
+- tests/
+- config/
+- docs/
