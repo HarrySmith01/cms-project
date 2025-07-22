@@ -1,16 +1,15 @@
 // jest.config.cjs
 /**
  * Jest configuration for CMS Project tests.
- * Created: July 22, 2025 12:50 PM IST
- * Updated: July 22, 2025 06:00 PM IST
+ * Updated: July 22, 2025 06:30 PM IST
  */
 module.exports = {
-  rootDir: '.', // ensure Jest uses the repo root
+  rootDir: '.',
   preset: 'ts-jest',
   testEnvironment: 'node',
-  moduleFileExtensions: ['ts', 'js'],
+  moduleFileExtensions: ['ts', 'js', 'cjs'],
   testMatch: ['**/tests/**/*.test.ts', '**/tests/**/*.spec.ts'],
   transform: {
-    '^.+\\.ts$': ['ts-jest', { isolatedModules: true }],
+    '^.+\\.(ts|cjs)$': ['ts-jest', { isolatedModules: true }],
   },
 };
