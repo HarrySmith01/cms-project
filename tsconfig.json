@@ -1,7 +1,3 @@
-// C:\Users\Pubg\Documents\cms-project\tsconfig.json
-// Description: TypeScript configuration for MikroORM and CMS project, enabling TS compilation with common settings
-// Created: July 22, 2025, 10:15 AM IST
-// Updated: July 22, 2025, 10:15 AM IST
 {
   "compilerOptions": {
     "target": "ES6",
@@ -10,9 +6,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "rootDir": "./src",
+    "rootDir": ".", // allow TS files anywhere in project (src, tests, config)
     "outDir": "./dist"
   },
-  "include": ["src/**/*", "mikro-orm.config.ts", "tests/**/*"],
+  "include": ["src/**/*", "tests/**/*", "mikro-orm.config.ts"],
   "exclude": ["node_modules"]
 }
