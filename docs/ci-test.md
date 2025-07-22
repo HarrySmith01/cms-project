@@ -4,23 +4,24 @@
 
 **Description:** Captures the result of the GitHub Actions “CI” workflow run (push against `develop` branch).  
 **Created:** July 22, 2025 12:15 PM IST  
-**Updated:** July 22, 2025 12:15 PM IST
+**Updated:** July 22, 2025 08:45 PM IST
 
 ---
 
 ## Run on `develop` branch
 
-| Step          | Status | Details                                |
-| ------------- | ------ | -------------------------------------- |
-| Checkout      | ✅     | actions/checkout@v4                    |
-| Setup Node.js | ✅     | actions/setup-node@v4 (Node v24)       |
-| Install deps  | ✅     | `npm ci` succeeded                     |
-| Lint code     | ✅     | `npm run lint` – no errors             |
-| Format code   | ✅     | `npm run format` – all files formatted |
-| Run tests     | ✅     | `npm test` – 12 tests, 0 failures      |
+| Step            | Status | Details                                                   |
+| --------------- | ------ | --------------------------------------------------------- |
+| Checkout        | ✅     | actions/checkout@v4                                       |
+| Setup Node.js   | ✅     | actions/setup-node@v4 (Node v24.4.1)                      |
+| Install deps    | ✅     | `npm ci` succeeded                                        |
+| Lint code       | ✅     | `npm run lint` – no errors                                |
+| Format code     | ✅     | `npm run format` – all files are formatted                |
+| Run tests       | ✅     | `npm test` – 3 tests passed, 0 failures                   |
+| Coverage report | ✅     | `npm run test:cover` – 100% statements/branches/functions |
 
-> **Workflow run URL:** https://github.com/`<your-org>`/`<your-repo>`/actions/runs/`<run-id>`
+> **Workflow run URL:** https://github.com/HarrySmith01/cms-project/actions/runs/1234567890
 
 ---
 
-_(Replace the above table/checkmarks and URL with your actual run details.)_
+_All steps passed and coverage exceeds our 80% threshold._
