@@ -8,7 +8,7 @@
   },
   "type": "commonjs",
   "scripts": {
-    "test": "jest",
+    "test": "jest --config jest.config.cjs",
     "prepare": "husky",
     "lint": "eslint --config eslint.config.cjs \"src/**/*.{ts,js}\"",
     "format": "prettier --write src/**/*.{ts,tsx,js,jsx}",
@@ -28,7 +28,6 @@
     "cypress": "13.13.0",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-airbnb-extended": "^2.1.2",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react": "7.37.5",
     "globals": "16.3.0",
@@ -38,7 +37,7 @@
     "supertest": "7.0.0",
     "ts-jest": "29.2.0",
     "ts-node": "10.9.2",
-    "typescript-eslint": "8.38.0"
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "@getbrevo/brevo": "2.5.0",
