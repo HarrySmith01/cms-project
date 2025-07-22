@@ -1,29 +1,28 @@
 /* eslint-disable import/no-unresolved */
 /**
  * tests/mikro-config.test.ts
- * Validates that your ORM config picks up DB_TYPE correctly.
+ * Validates that the exported `dbType` matches process.env.DB_TYPE logic.
  */
 
-describe('MikroORM Config', () => {
-  // Helper to dynamically import the config with current process.env
-  async function loadConfig(): Promise<{ type: string }> {
-    // Clear the module cache so import sees updated env
-    jest.resetModules();
-    // Dynamically import the TS config file (no .ts extension)
-    const mod = await import('../mikro-orm.config');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return mod.default as any; // default export from defineConfig includes .type
-  }
-
-  it('defaults to mysql when DB_TYPE is empty', async () => {
-    process.env.DB_TYPE = '';
-    const config = await loadConfig();
-    expect(config.type).toBe('mysql');
+describe('MikroORM Config dbType', () => {
+  beforeEach(() => {
+    jest.resetModules(); // clear cache so require() re-evaluates process.env
   });
 
-  it('uses mongo when DB_TYPE=mongo', async () => {
+  it('defaults to "mysql" when DB_TYPE is empty or invalid', () => {
+    process.env.DB_TYPE = '';
+    let { dbType } = require('../mikro-orm.config');
+    expect(dbType).toBe('mysql');
+
+    process.env.DB_TYPE = 'somethingElse';
+    jest.resetModules();
+    ({ dbType } = require('../mikro-orm.config'));
+    expect(dbType).toBe('mysql');
+  });
+
+  it('returns "mongo" when DB_TYPE="mongo"', () => {
     process.env.DB_TYPE = 'mongo';
-    const config = await loadConfig();
-    expect(config.type).toBe('mongo');
+    const { dbType } = require('../mikro-orm.config');
+    expect(dbType).toBe('mongo');
   });
 });
