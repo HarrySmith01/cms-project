@@ -13,7 +13,8 @@
     "lint": "eslint --config eslint.config.cjs \"src/**/*.{ts,js}\"",
     "format": "prettier --write src/**/*.{ts,tsx,js,jsx}",
     "orm:check": "mikro-orm config:check",
-    "test:cover": "jest --coverage"
+    "test:cover": "jest --coverage",
+    "benchmark": "artillery quick --count 10 http://localhost:3000"
   },
   "keywords": [],
   "author": "",
