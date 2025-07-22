@@ -1,7 +1,7 @@
 # .github/workflows/ci.yml
 # Description: Continuous Integration workflow for CMS project
 # Created: July 22, 2025, 11:45 AM IST
-# Updated: July 22, 2025, 11:45 AM IST
+# Updated: July 22, 2025, 12:10 PM IST
 
 name: CI
 
@@ -25,7 +25,7 @@ jobs:
           node-version: '24'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install --legacy-peer-deps
 
       - name: Lint code
         run: npm run lint
