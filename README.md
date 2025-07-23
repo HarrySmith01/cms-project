@@ -110,3 +110,19 @@ docker compose version
 docker compose up -d
 
 See [Database Setup docs](docs/database-setup.md) for full instructions.
+
+# 1. Run one final auto-fix
+
+npm run lint -- --fix
+
+# 2. Stage every changed file
+
+git add .
+
+# 3. Commit with a descriptive message
+
+git commit -m "chore: disable eslint --fix in pre-commit hook and stop editor format-on-save"
+
+# 4. Push to your develop branch
+
+git push origin develop
