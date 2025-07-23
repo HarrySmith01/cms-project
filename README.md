@@ -121,7 +121,7 @@ git add .
 
 # 3. Commit with a descriptive message
 
-git commit -m "Updated CI ML FILE"
+git commit -m "Updated CI YML FILE"
 
 # 4. Push to your develop branch
 

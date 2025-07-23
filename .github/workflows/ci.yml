@@ -1,8 +1,4 @@
 # .github/workflows/ci.yml
-# Description: Continuous Integration workflow for CMS project, with real MySQL & MongoDB services
-# Created: July 22, 2025, 11:45 AM IST
-# Updated: July 23, 2025, 18:00 IST
-
 name: CI
 
 on:
@@ -19,7 +15,8 @@ jobs:
       mysql:
         image: mysql:8.4
         env:
-          MYSQL_ROOT_PASSWORD: ''
+          # allow an empty root password
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
         ports:
           - 3306:3306
         options: >-
@@ -31,8 +28,9 @@ jobs:
       mongo:
         image: mongo:8.0
         env:
+          # create a root user with password 'root'
           MONGO_INITDB_ROOT_USERNAME: root
-          MONGO_INITDB_ROOT_PASSWORD: ''
+          MONGO_INITDB_ROOT_PASSWORD: root
         ports:
           - 27017:27017
         options: >-
@@ -42,15 +40,13 @@ jobs:
           --health-retries=3
 
     env:
-      # MySQL config
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: ''
       DB_NAME: cms_dev
       TEST_DB_NAME: cms_test
-      # MongoDB connection string (no default database in URL; tests will pick it up)
-      MONGO_URL: 'mongodb://root:@127.0.0.1:27017'
+      MONGO_URL: 'mongodb://root:root@127.0.0.1:27017'
 
     steps:
       - name: Checkout repository
