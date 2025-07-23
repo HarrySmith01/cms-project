@@ -35,7 +35,7 @@ jobs:
         ports:
           - 27017:27017
         options: >-
-          --health-cmd="mongo --username root --password root --authenticationDatabase admin --eval \"db.getMongo().getDB('cms_dev').command({ ping: 1 })\""
+          --health-cmd="mongosh --username root --password root --authenticationDatabase admin --quiet --eval 'db.adminCommand({ ping: 1 })'"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -49,26 +49,36 @@ jobs:
       DB_PASSWORD: root
       DB_NAME: cms_dev
       TEST_DB_NAME: cms_test
-
-      # MongoDB (authSource=admin because root user lives there)
-      MONGO_URL: mongodb://root:root@127.0.0.1:27017/cms_dev?authSource=admin
-
-      # Redis (not used in CI, but safe to stub)
-      REDIS_URL: redis://localhost:6379
+      # MongoDB
+      MONGO_URL: 'mongodb://root:root@127.0.0.1:27017/cms_dev?authSource=admin'
+      # Redis (not used in CI)
+      REDIS_URL: 'redis://localhost:6379'
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Use Node.js 24.x & cache modules
         uses: actions/setup-node@v4
         with:
           node-version: '24'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: Create local databases
+      # wait until both MySQL & Mongo are healthy
+      - name: Wait for MySQL & Mongo
+        run: |
+          for i in {1..12}; do
+            mysqladmin ping --host=127.0.0.1 --silent && \
+            mongosh --username root --password root --authenticationDatabase admin --quiet --eval 'db.adminCommand({ping:1})' \
+              && echo "All databases healthy" && break
+            echo "Waiting for databases ($i/12)…"
+            sleep 5
+          done
+
+      - name: Setup Databases (migrations + seed)
         run: npm run db:setup
 
       - name: Lint code
