@@ -1,0 +1,39 @@
+# Path: docker-compose.yml
+# Description: Defines Docker services for MySQL 8.4 LTS and MongoDB 8.0,
+#              with persistent volumes and root credentials.
+# Created: 2025-07-23T14:30:00+05:30
+# Updated: 2025-07-23T14:30:00+05:30
+
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: cms_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cms_dev
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  mongodb:
+    image: mongo:8.0
+    container_name: cms_mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: cms
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mysql_data:
+  mongo_data:
