@@ -121,7 +121,7 @@ git add .
 
 # 3. Commit with a descriptive message
 
-git commit -m "Updated CI YML FILE"
+git commit -m "ci: add db:setup script and update CI workflow"
 
 # 4. Push to your develop branch
 
