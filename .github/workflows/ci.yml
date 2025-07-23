@@ -1,37 +1,80 @@
 # .github/workflows/ci.yml
-# Description: Continuous Integration workflow for CMS project
+# Description: Continuous Integration workflow for CMS project, with real MySQL & MongoDB services
 # Created: July 22, 2025, 11:45 AM IST
-# Updated: July 22, 2025, 12:10 PM IST
+# Updated: July 23, 2025, 18:00 IST
 
 name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [ main, develop ]
   pull_request:
-    branches: [main, develop]
+    branches: [ main, develop ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: ''
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+      mongo:
+        image: mongo:8.0
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: ''
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongosh --eval 'db.adminCommand({ ping: 1 })'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    env:
+      # MySQL config
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: ''
+      DB_NAME: cms_dev
+      TEST_DB_NAME: cms_test
+      # MongoDB connection string (no default database in URL; tests will pick it up)
+      MONGO_URL: 'mongodb://root:@127.0.0.1:27017'
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Use Node.js 24.x
         uses: actions/setup-node@v4
         with:
           node-version: '24'
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci
 
       - name: Lint code
         run: npm run lint
 
       - name: Format code
         run: npm run format
+
+      - name: Create databases
+        run: npm run db:setup
+
+      - name: Run migrations
+        run: npx mikro-orm migration:up
 
       - name: Run tests
         run: npm test
