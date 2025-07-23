@@ -1,12 +1,90 @@
 # Project Structure
+- config/
+  - redis.config.ts
+- docs/
+  - ci-test.md
+  - dependencies.md
+  - project-structure.md
+  - risks.md
+  - story 2.md
+  - story1-step1-log.md
+  - story3.md
+  - story4.md
+  - version-log.md
+- eslint.config.cjs
+- jest.config.cjs
+- mikro-orm.config.ts
+- package-lock.json
+- package.json
+- README.md
 - src/
   - entities/
-  - routes/
-  - services/
-  - seeders/
-  - utils/
+    - BatchInstallPlan.ts
+    - BusinessCalendar.ts
+    - CmnBuilding.ts
+    - CmnCostCenter.ts
+    - CmnDepartment.ts
+    - CmnLocation.ts
+    - CmnSchedule.ts
+    - CoreCompany.ts
+    - GswContent.ts
+    - index.ts
+    - LdapServerConfig.ts
+    - RateType.ts
+    - RollbackContext.ts
+    - SnHrIntegrationsSource.ts
+    - Subscription.ts
+    - SubscriptionEntitlement.ts
+    - SysChoice.ts
+    - SysDbObject.ts
+    - SysDictionary.ts
+    - SysDomain.ts
+    - SysFilterOptionDynamic.ts
+    - SysGlideObject.ts
+    - SysGroupHasRole.ts
+    - SysMetadata.ts
+    - SysPackage.ts
+    - SysPackageDependencyItem.ts
+    - SysPackageDependencyM2M.ts
+    - SysPerspective.ts
+    - SysPlugin.ts
+    - SysProperty.ts
+    - SysRemoteUpdateSet.ts
+    - SysScope.ts
+    - SysSecurityAcl.ts
+    - SysSecurityAclRole.ts
+    - SysSecurityAttribute.ts
+    - SysSecurityOperation.ts
+    - SysUpdateSet.ts
+    - SysUpdateSetSource.ts
+    - SysUser.ts
+    - SysUserGrmember.ts
+    - SysUserGroup.ts
+    - SysUserHasRole.ts
+    - SysUserRole.ts
+    - TimeSheetPolicy.ts
+    - VPlugin.ts
+  - jobs/
+    - extensionEngine.ts
   - plugins/
+  - routes/
+  - runtime/
+    - DynamicRecord.ts
+    - GlideRecord.ts
+    - MetadataCache.ts
+  - seeders/
+  - services/
+  - subscribers/
+    - DictionarySubscriber.ts
   - themes/
+  - utils/
+    - queue.ts
 - tests/
-- config/
-- docs/
+  - ci-trigger.test.ts
+  - code-quality.test.js
+  - generate-structure.js
+  - mikro-config-test.ts
+  - mikro-config.test.ts
+- tools/
+  - check-risks.js
+- tsconfig.json
