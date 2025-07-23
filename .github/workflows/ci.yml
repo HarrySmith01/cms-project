@@ -16,29 +16,17 @@ jobs:
         image: mysql:8.4
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
           MYSQL_DATABASE: cms_dev
         ports:
           - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
       mongo:
         image: mongo:8.0
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: root
-          MONGO_INITDB_DATABASE: cms_dev
         ports:
           - 27017:27017
-        options: >-
-          --health-cmd="mongo admin --username root --password root --quiet --eval 'db.runCommand({ ping: 1 })'"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
     env:
       # MySQL
@@ -49,16 +37,17 @@ jobs:
       DB_PASSWORD: root
       DB_NAME: cms_dev
       TEST_DB_NAME: cms_test
-      # MongoDB
-      MONGO_URL: 'mongodb://root:root@127.0.0.1:27017/cms_dev?authSource=admin'
-      # Redis (not used in CI)
-      REDIS_URL: 'redis://localhost:6379'
+      # MongoDB (authSource=admin)
+      MONGO_URL: >-
+        mongodb://root:root@127.0.0.1:27017/?authSource=admin
+      # Redis (unused in CI)
+      REDIS_URL: redis://localhost:6379
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node.js 24.x & cache modules
+      - name: Setup Node.js & cache
         uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -67,25 +56,45 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      # wait until both MySQL & Mongo are healthy
-      - name: Wait for MySQL & Mongo
+      - name: Wait for MySQL
         run: |
+          set -euo pipefail
+          echo "⏳ Waiting for MySQL..."
           for i in {1..12}; do
-            mysqladmin ping --host=127.0.0.1 --silent && \
-            mongo admin --username root --password root --quiet --eval 'db.runCommand({ ping: 1 })' \
-              && echo "All databases healthy" && break
-            echo "Waiting for databases ($i/12)…"
+            if mysqladmin ping --host=127.0.0.1 --silent; then
+              echo "✅ MySQL ready"
+              break
+            fi
+            echo "  MySQL not ready yet ($i/12)..."
             sleep 5
           done
 
-      - name: Setup Databases (migrations + seed)
+      - name: Wait for Mongo
+        run: |
+          set -euo pipefail
+          echo "⏳ Waiting for MongoDB..."
+          for i in {1..12}; do
+            # use docker exec to call the container's mongosh binary
+            if docker exec $(docker ps -q -f ancestor=mongo:8.0) \
+                 mongosh --username root --password root \
+                         --authenticationDatabase admin \
+                         --quiet --eval 'db.adminCommand({ ping: 1 })' \
+               >/dev/null 2>&1; then
+              echo "✅ MongoDB ready"
+              break
+            fi
+            echo "  MongoDB not ready yet ($i/12)..."
+            sleep 5
+          done
+
+      - name: Setup DBs (migrations + seed)
         run: npm run db:setup
 
-      - name: Lint code
+      - name: Lint
         run: npm run lint
 
-      - name: Format code
+      - name: Format
         run: npm run format
 
-      - name: Run tests
+      - name: Test
         run: npm test
