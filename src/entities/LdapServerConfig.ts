@@ -8,77 +8,77 @@ import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 @Entity({ tableName: 'ldap_server_config' })
 export class LdapServerConfig {
   @PrimaryKey()
-    sys_id!: string;
+  sys_id!: string;
 
   @Property({ length: 40 })
-    name!: string;
+  name!: string;
 
   @Property({ default: true })
-    active: boolean = true;
+  active: boolean = true;
 
   @Property({ type: 'boolean', default: true })
-    authenticate: boolean = true;
+  authenticate: boolean = true;
 
   @Property({ type: 'boolean', default: false })
-    listener: boolean = false;
+  listener: boolean = false;
 
   @Property({ type: 'boolean', default: true })
-    paging: boolean = true;
+  paging: boolean = true;
 
   @Property({ type: 'boolean', default: false })
-    ssl: boolean = false;
+  ssl: boolean = false;
 
   @Property({ type: 'number', nullable: true })
-    connect_timeout?: number;
+  connect_timeout?: number;
 
   @Property({ type: 'number', nullable: true })
-    listen_interval?: number;
+  listen_interval?: number;
 
   @Property({ type: 'number', nullable: true })
-    read_timeout?: number;
+  read_timeout?: number;
 
   @Property({ length: 4000, nullable: true })
-    attributes?: string;
+  attributes?: string;
 
   @Property({ length: 80, nullable: true })
-    dn_field?: string;
+  dn_field?: string;
 
   @Property({ length: 100, nullable: true })
-    dn?: string;
+  dn?: string;
 
   @Property({ length: 255, nullable: true })
-    password?: string;
+  password?: string;
 
   @Property({ length: 32, nullable: true })
-    map?: string;
+  map?: string;
 
   @Property({ length: 32, nullable: true })
-    mid_server?: string;
+  mid_server?: string;
 
   @Property({ length: 1000, nullable: true })
-    server_url?: string;
+  server_url?: string;
 
   @Property({ length: 100, nullable: true })
-    rdn?: string;
+  rdn?: string;
 
   @Property({ length: 100, nullable: true })
-    system_id?: string;
+  system_id?: string;
 
   @Property({ length: 40, nullable: true })
-    vendor?: string;
+  vendor?: string;
 
   @Property({ type: 'datetime', nullable: true })
-    sys_created_on?: Date;
+  sys_created_on?: Date;
 
   @Property({ length: 40, nullable: true })
-    sys_created_by?: string;
+  sys_created_by?: string;
 
   @Property({ type: 'datetime', nullable: true })
-    sys_updated_on?: Date;
+  sys_updated_on?: Date;
 
   @Property({ length: 40, nullable: true })
-    sys_updated_by?: string;
+  sys_updated_by?: string;
 
   @Property({ type: 'number', nullable: true })
-    sys_mod_count?: number;
+  sys_mod_count?: number;
 }

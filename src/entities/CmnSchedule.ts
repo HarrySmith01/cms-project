@@ -8,36 +8,36 @@ import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 @Entity({ tableName: 'cmn_schedule' })
 export class CmnSchedule {
   @PrimaryKey()
-    sys_id!: string;
+  sys_id!: string;
 
   @Property({ length: 40, nullable: true })
-    document?: string;
+  document?: string;
 
   @Property({ length: 32, nullable: true })
-    document_key?: string;
+  document_key?: string;
 
   @Property({ length: 80 })
-    name!: string;
+  name!: string;
 
   @Property({ type: 'boolean', default: false })
-    read_only: boolean = false;
+  read_only: boolean = false;
 
   @Property({ length: 40, nullable: true })
-    type?: string;
+  type?: string;
 
   // audit fields
   @Property({ type: 'datetime', nullable: true })
-    sys_created_on?: Date;
+  sys_created_on?: Date;
 
   @Property({ length: 40, nullable: true })
-    sys_created_by?: string;
+  sys_created_by?: string;
 
   @Property({ type: 'datetime', nullable: true })
-    sys_updated_on?: Date;
+  sys_updated_on?: Date;
 
   @Property({ length: 40, nullable: true })
-    sys_updated_by?: string;
+  sys_updated_by?: string;
 
   @Property({ type: 'number', nullable: true })
-    sys_mod_count?: number;
+  sys_mod_count?: number;
 }

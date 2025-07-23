@@ -22,93 +22,93 @@ export class VPlugin {
   /** Primary key (UUID) */
   @PrimaryKey({ type: 'uuid' })
   @Index()
-    sys_id: string = uuid();
+  sys_id: string = uuid();
 
   /** External plugin ID */
   @Property()
-    id!: string;
+  id!: string;
 
   /** Human-readable name */
   @Property({ type: 'text' })
-    name!: string;
+  name!: string;
 
   /** Available version string */
   @Property({ nullable: true })
-    available_version?: string;
+  available_version?: string;
 
   /** Should block install? */
   @Property({ default: false })
-    block_install: boolean = false;
+  block_install: boolean = false;
 
   /** Text definition of the plugin */
   @Property({ type: 'text', nullable: true })
-    definition?: string;
+  definition?: string;
 
   /** Translated description HTML */
   @Property({ type: 'text', nullable: true })
-    description?: string;
+  description?: string;
 
   /** Entitlement category */
   @Property({ nullable: true })
-    entitled?: string;
+  entitled?: string;
 
   /** Demo data included? */
   @Property({ default: false })
-    has_demo_data: boolean = false;
+  has_demo_data: boolean = false;
 
   /** Help URL */
   @Property({ nullable: true })
-    help?: string;
+  help?: string;
 
   /** Is licensable? */
   @Property({ default: false })
-    licensable: boolean = false;
+  licensable: boolean = false;
 
   /** File system or registry path */
   @Property({ nullable: true })
-    path?: string;
+  path?: string;
 
   /** Plugin indicators JSON or comma list */
   @Property({ type: 'text', nullable: true })
-    indicators?: string;
+  indicators?: string;
 
   /** Plugin provider name */
   @Property({ nullable: true })
-    provider?: string;
+  provider?: string;
 
   /** Security/scope */
   @Property({ nullable: true })
-    scope?: string;
+  scope?: string;
 
   /** Plugin state */
   @Property({ nullable: true })
-    state?: string;
+  state?: string;
 
   /** Active flag (string-based status) */
   @Property({ nullable: true })
-    active?: string;
+  active?: string;
 
   /** License category for plugin */
   @Property({ nullable: true })
-    license_category?: string;
+  license_category?: string;
 
   /** License model */
   @Property({ nullable: true })
-    license_model?: string;
+  license_model?: string;
 
   /** Plugin version */
   @Property({ nullable: true })
-    version?: string;
+  version?: string;
 
   /** Relation: Guided setup configuration */
   @ManyToOne(() => GswContent, { nullable: true })
-    guided_setup_guid?: GswContent;
+  guided_setup_guid?: GswContent;
 
   /** Plugins this one requires (self-M2M) */
   @ManyToMany(() => VPlugin, (plugin) => plugin.requiredBy, { owner: true })
-    requires = new Collection<VPlugin>(this);
+  requires = new Collection<VPlugin>(this);
 
   /** Reverse side of requires */
   @ManyToMany(() => VPlugin, (plugin) => plugin.requires)
-    requiredBy = new Collection<VPlugin>(this);
+  requiredBy = new Collection<VPlugin>(this);
 }

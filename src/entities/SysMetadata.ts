@@ -21,51 +21,51 @@ export class SysMetadata {
   /** Primary key (UUID) */
   @PrimaryKey({ type: 'uuid' })
   @Index()
-    sys_id: string = uuid();
+  sys_id: string = uuid();
 
   /** Reference to application scope */
   @ManyToOne(() => SysScope, { nullable: false })
   @Index()
-    sys_scope!: SysScope;
+  sys_scope!: SysScope;
 
   /** Name of the class/table this metadata describes */
   @Property()
-    sys_class_name!: string;
+  sys_class_name!: string;
 
   /** When the metadata record was created */
   @Property()
-    sys_created_on: Date = new Date();
+  sys_created_on: Date = new Date();
 
   /** User who created this metadata record */
   @Property()
-    sys_created_by!: string;
+  sys_created_by!: string;
 
   /** Display name for this metadata record */
   @Property()
-    sys_name!: string;
+  sys_name!: string;
 
   /** Owning package/application (optional) */
   @ManyToOne(() => SysPackage, { nullable: true })
   @Index()
-    sys_package?: SysPackage;
+  sys_package?: SysPackage;
 
   /** Protection policy identifier */
   @Property()
-    sys_policy!: string;
+  sys_policy!: string;
 
   /** Name of the update set this metadata belongs to */
   @Property()
-    sys_update_name!: string;
+  sys_update_name!: string;
 
   /** When the metadata record was last updated */
   @Property({ onUpdate: () => new Date() })
-    sys_updated_on: Date = new Date();
+  sys_updated_on: Date = new Date();
 
   /** User who last updated this metadata record */
   @Property()
-    sys_updated_by!: string;
+  sys_updated_by!: string;
 
   /** Count of modifications to this record */
   @Property({ default: 0 })
-    sys_mod_count: number = 0;
+  sys_mod_count: number = 0;
 }

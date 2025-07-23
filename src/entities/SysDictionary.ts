@@ -3,9 +3,7 @@
 // Created: 2025-07-22 22:00:00
 // Updated: 2025-07-22 23:00:00
 
-import {
-  Entity, Property, PrimaryKey, ManyToOne,
-} from '@mikro-orm/core';
+import { Entity, Property, PrimaryKey, ManyToOne } from '@mikro-orm/core';
 import { v4 } from 'uuid';
 import { SysUser } from './SysUser';
 import { SysDbObject } from './SysDbObject';
@@ -16,174 +14,174 @@ import { SysGlideObject } from './SysGlideObject';
 export class SysDictionary {
   /** Primary Key */
   @PrimaryKey({ type: 'uuid' })
-    sys_id: string = v4();
+  sys_id: string = v4();
 
   /** Column label */
   @Property({ type: 'string', length: 80 })
-    column_label!: string;
+  column_label!: string;
 
   /** Column name */
   @Property({ type: 'string', length: 80 })
-    element!: string;
+  element!: string;
 
   @Property({ type: 'boolean', default: false })
-    active!: boolean;
+  active!: boolean;
 
   @Property({ type: 'boolean', default: false })
-    array!: boolean;
+  array!: boolean;
 
   @Property({ type: 'boolean', default: false })
-    array_denormalized!: boolean;
+  array_denormalized!: boolean;
 
   @Property({ type: 'string', length: 1000, nullable: true })
-    attributes?: string;
+  attributes?: string;
 
   @Property({ type: 'boolean', default: false })
-    audit!: boolean;
+  audit!: boolean;
 
   /** Calculated flag */
   @Property({ type: 'boolean', default: false })
-    virtual!: boolean;
+  virtual!: boolean;
 
   @Property({ type: 'string', length: 8000, nullable: true })
-    calculation?: string;
+  calculation?: string;
 
   @Property({ type: 'string', length: 40 })
-    virtual_type!: string;
+  virtual_type!: string;
 
   @Property({ type: 'number', default: 0 })
-    choice!: number;
+  choice!: number;
 
   @Property({ type: 'string', length: 80, nullable: true })
-    choice_field?: string;
+  choice_field?: string;
 
   @Property({ type: 'string', length: 80, nullable: true })
-    choice_table?: string;
+  choice_table?: string;
 
   @Property({ type: 'boolean', default: false })
-    display!: boolean;
+  display!: boolean;
 
   @Property({ type: 'boolean', default: false })
-    dynamic_creation!: boolean;
+  dynamic_creation!: boolean;
 
   @Property({ type: 'string', length: 4000, nullable: true })
-    dynamic_creation_script?: string;
+  dynamic_creation_script?: string;
 
   // Reference to Dynamic Filter Options
   @ManyToOne(() => SysFilterOptionDynamic, { nullable: true })
-    dynamic_default_value?: SysFilterOptionDynamic;
+  dynamic_default_value?: SysFilterOptionDynamic;
 
   @ManyToOne(() => SysFilterOptionDynamic, { nullable: true })
-    dynamic_ref_qual?: SysFilterOptionDynamic;
+  dynamic_ref_qual?: SysFilterOptionDynamic;
 
   @Property({ type: 'boolean', default: false })
-    element_reference!: boolean;
+  element_reference!: boolean;
 
   @Property({ type: 'string', length: 40, nullable: true })
-    foreign_database?: string;
+  foreign_database?: string;
 
   @Property({ type: 'string', length: 4000, nullable: true })
-    formula?: string;
+  formula?: string;
 
   @Property({ type: 'string', length: 4000, nullable: true })
-    function_definition?: string;
+  function_definition?: string;
 
   @Property({ type: 'boolean', default: false })
-    function_field!: boolean;
+  function_field!: boolean;
 
   @Property({ type: 'boolean', default: false })
-    mandatory!: boolean;
+  mandatory!: boolean;
 
   @Property({ type: 'number', nullable: true })
-    max_length?: number;
+  max_length?: number;
 
   @Property({ type: 'string', length: 80, nullable: true })
-    next_element?: string;
+  next_element?: string;
 
   @Property({ type: 'boolean', default: false })
-    primary!: boolean;
+  primary!: boolean;
 
   @Property({ type: 'boolean', default: false })
-    read_only!: boolean;
+  read_only!: boolean;
 
   @Property({ type: 'string', length: 255, nullable: true })
-    read_roles?: string;
+  read_roles?: string;
 
   // Reference to table definition
   @ManyToOne(() => SysDbObject)
-    reference?: SysDbObject;
+  reference?: SysDbObject;
 
   @Property({ type: 'string', length: 20, nullable: true })
-    reference_cascade_rule?: string;
+  reference_cascade_rule?: string;
 
   @Property({ type: 'boolean', default: false })
-    reference_floats!: boolean;
+  reference_floats!: boolean;
 
   @Property({ type: 'string', length: 40, nullable: true })
-    reference_key?: string;
+  reference_key?: string;
 
   @Property({ type: 'string', length: 1000, nullable: true })
-    reference_qual?: string;
+  reference_qual?: string;
 
   @Property({ type: 'string', length: 1000, nullable: true })
-    reference_qual_condition?: string;
+  reference_qual_condition?: string;
 
   @Property({ type: 'string', length: 10, nullable: true })
-    reference_type?: string;
+  reference_type?: string;
 
   @Property({ type: 'number', default: 0 })
-    sizeclass!: number;
+  sizeclass!: number;
 
   @Property({ type: 'boolean', default: false })
-    spell_check!: boolean;
+  spell_check!: boolean;
 
   @Property({ type: 'boolean', default: false })
-    staged!: boolean;
+  staged!: boolean;
 
   @Property({ type: 'string', length: 80 })
-    name!: string;
+  name!: string;
 
   @Property({ type: 'boolean', default: false })
-    table_reference!: boolean;
+  table_reference!: boolean;
 
   @Property({ type: 'boolean', default: false })
-    text_index!: boolean;
+  text_index!: boolean;
 
   /** Reference to field class definition */
   @ManyToOne(() => SysGlideObject)
-    internal_type!: SysGlideObject;
+  internal_type!: SysGlideObject;
 
   @Property({ type: 'boolean', default: false })
-    unique!: boolean;
+  unique!: boolean;
 
   @Property({ type: 'boolean', default: false })
-    use_dependent_field!: boolean;
+  use_dependent_field!: boolean;
 
   @Property({ type: 'boolean', default: false })
-    use_dynamic_default!: boolean;
+  use_dynamic_default!: boolean;
 
   @Property({ type: 'string', length: 40, nullable: true })
-    use_reference_qualifier?: string;
+  use_reference_qualifier?: string;
 
   @Property({ type: 'string', length: 40, nullable: true })
-    widget?: string;
+  widget?: string;
 
   @Property({ type: 'string', length: 255, nullable: true })
-    write_roles?: string;
+  write_roles?: string;
 
   @Property({ type: 'boolean', default: false })
-    xml_view!: boolean;
+  xml_view!: boolean;
 
   // audit fields
   @Property({ onCreate: () => new Date() })
-    sys_created_on: Date = new Date();
+  sys_created_on: Date = new Date();
 
   @ManyToOne(() => SysUser)
-    sys_created_by!: SysUser;
+  sys_created_by!: SysUser;
 
   @Property({ onUpdate: () => new Date(), nullable: true })
-    sys_updated_on?: Date;
+  sys_updated_on?: Date;
 
   @Property()
-    sys_updated_by!: string;
+  sys_updated_by!: string;
 }

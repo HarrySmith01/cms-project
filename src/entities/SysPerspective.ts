@@ -8,36 +8,36 @@ import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 @Entity({ tableName: 'sys_perspective' })
 export class SysPerspective {
   @PrimaryKey()
-    sys_id!: string;
+  sys_id!: string;
 
   @Property({ length: 40, nullable: true })
-    application?: string;
+  application?: string;
 
   @Property({ length: 40, nullable: true })
-    applications?: string;
+  applications?: string;
 
   @Property({ length: 40, nullable: true })
-    name?: string;
+  name?: string;
 
   @Property({ type: 'number', nullable: true })
-    order?: number;
+  order?: number;
 
   @Property({ length: 40, nullable: true })
-    roles?: string;
+  roles?: string;
 
   // audit fields
   @Property({ type: 'datetime', nullable: true })
-    sys_created_on?: Date;
+  sys_created_on?: Date;
 
   @Property({ length: 40, nullable: true })
-    sys_created_by?: string;
+  sys_created_by?: string;
 
   @Property({ type: 'datetime', nullable: true })
-    sys_updated_on?: Date;
+  sys_updated_on?: Date;
 
   @Property({ length: 40, nullable: true })
-    sys_updated_by?: string;
+  sys_updated_by?: string;
 
   @Property({ type: 'number', nullable: true })
-    sys_mod_count?: number;
+  sys_mod_count?: number;
 }

@@ -29,10 +29,10 @@ import { SysUserGroup } from './SysUserGroup';
 @Entity({ tableName: 'sys_user' })
 export class SysUser {
   @PrimaryKey({ type: 'uuid' })
-    sys_id: string = v4();
+  sys_id: string = v4();
 
   @Property({ length: 80, unique: true })
-    user_name!: string;
+  user_name!: string;
 
   @Property({ length: 50, nullable: true }) prefix?: string;
 
@@ -85,26 +85,26 @@ export class SysUser {
   @ManyToOne(() => CoreCompany, { nullable: true }) company?: CoreCompany;
 
   @ManyToOne(() => CmnCostCenter, { nullable: true })
-    cost_center?: CmnCostCenter;
+  cost_center?: CmnCostCenter;
 
   @ManyToOne(() => CmnDepartment, { nullable: true })
-    department?: CmnDepartment;
+  department?: CmnDepartment;
 
   @ManyToOne(() => SnHrIntegrationsSource, { nullable: true })
-    hr_integration_source?: SnHrIntegrationsSource;
+  hr_integration_source?: SnHrIntegrationsSource;
 
   @ManyToOne(() => LdapServerConfig, { nullable: true })
-    ldap_server?: LdapServerConfig;
+  ldap_server?: LdapServerConfig;
 
   @ManyToOne(() => CmnLocation, { nullable: true }) location?: CmnLocation;
 
   @ManyToOne(() => SysPerspective, { nullable: true })
-    default_perspective?: SysPerspective;
+  default_perspective?: SysPerspective;
 
   @ManyToOne(() => CmnSchedule, { nullable: true }) schedule?: CmnSchedule;
 
   @ManyToOne(() => TimeSheetPolicy, { nullable: true })
-    time_sheet_policy?: TimeSheetPolicy;
+  time_sheet_policy?: TimeSheetPolicy;
 
   @ManyToOne(() => SysUserGroup, { nullable: true }) sys_domain?: SysUserGroup;
 
@@ -132,11 +132,11 @@ export class SysUser {
 
   /** direct group memberships (sys_user_grmember) */
   @OneToMany(() => SysUserGrmember, (grm) => grm.user)
-    groups = new Collection<SysUserGrmember>(this);
+  groups = new Collection<SysUserGrmember>(this);
 
   /** direct user–role assignments (sys_user_has_role) */
   @OneToMany(() => SysUserHasRole, (ur) => ur.user)
-    userRoles = new Collection<SysUserHasRole>(this);
+  userRoles = new Collection<SysUserHasRole>(this);
 
   // ← **no** groupRoles here, since sys_user has no mappedBy back-reference to sys_group_has_role
 }

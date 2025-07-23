@@ -11,47 +11,47 @@ import { SysMetadata } from './SysMetadata';
 export class SysFilterOptionDynamic extends SysMetadata {
   /** Primary record identifier */
   @PrimaryKey({ type: 'uuid' })
-    sys_id: string = v4();
+  sys_id: string = v4();
 
   @Property({ type: 'boolean', default: false })
-    active!: boolean;
+  active!: boolean;
 
   @Property({ type: 'boolean', default: false })
-    available_for_default!: boolean;
+  available_for_default!: boolean;
 
   @Property({ type: 'boolean', default: false })
-    available_for_filter!: boolean;
+  available_for_filter!: boolean;
 
   @Property({ type: 'boolean', default: false })
-    available_for_ref_qual!: boolean;
+  available_for_ref_qual!: boolean;
 
   @Property({ type: 'string', length: 32, nullable: true })
-    field_type?: string;
+  field_type?: string;
 
   @Property({ type: 'string', length: 40 })
-    label!: string;
+  label!: string;
 
   @Property({ type: 'number', default: 0 })
-    order!: number;
+  order!: number;
 
   @Property({ type: 'string', length: 32, nullable: true })
-    script_reference_id?: string;
+  script_reference_id?: string;
 
   @Property({ type: 'string', length: 80, nullable: true })
-    script_reference_table?: string;
+  script_reference_table?: string;
 
   @Property({ type: 'string', length: 80 })
-    table!: string;
+  table!: string;
 
   @Property({ type: 'string', length: 255, nullable: true })
-    roles?: string;
+  roles?: string;
 
   @Property({ type: 'string', length: 32, nullable: true })
-    filter_by_schedule?: string;
+  filter_by_schedule?: string;
 
   @Property({ type: 'string', length: 255, nullable: true })
-    script?: string;
+  script?: string;
 
   @Property({ type: 'string', length: 80, nullable: true })
-    table_containing_filter?: string;
+  table_containing_filter?: string;
 }
