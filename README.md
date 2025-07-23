@@ -81,6 +81,8 @@ npx mikro-orm migration:down
 
 # Docker Commands
 
+# Note: Docker, MySql , Mongo DB must need to be installed
+
 # 1. Start services in detached mode
 
 docker-compose up -d
@@ -100,3 +102,11 @@ docker-compose logs -f mongodb
 # 5. Stop Docker
 
 docker-compose down
+
+# Other Doker Command
+
+docker version
+docker compose version
+docker compose up -d
+
+See [Database Setup docs](docs/database-setup.md) for full instructions.
