@@ -85,7 +85,10 @@ jobs:
       - name: Setup Test DB
         run: npm run db:setup:test
 
-      - name: Lint
+      - name: Auto-fix ESLint issues
+        run: npm run lint -- --fix
+
+      - name: Lint (no errors allowed)
         run: npm run lint
 
       - name: Format
