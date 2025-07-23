@@ -1,11 +1,15 @@
 # .github/workflows/ci.yml
+# Description: Continuous Integration workflow for CMS project
+# Created: July 22, 2025, 11:45 AM IST
+# Updated: July 23, 2025, 12:00 PM IST
+
 name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   build:
@@ -15,7 +19,7 @@ jobs:
       mysql:
         image: mysql:8.4
         env:
-          # allow an empty root password
+          MYSQL_ROOT_PASSWORD: root
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
         ports:
           - 3306:3306
@@ -23,54 +27,52 @@ jobs:
           --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=5
 
       mongo:
         image: mongo:8.0
         env:
-          # create a root user with password 'root'
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: root
         ports:
           - 27017:27017
         options: >-
-          --health-cmd="mongosh --eval 'db.adminCommand({ ping: 1 })'"
+          --health-cmd="mongo --username root --password root --eval 'db.adminCommand({ ping: 1 })'"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=5
 
     env:
+      DB_TYPE: mysql
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
       DB_USER: root
-      DB_PASSWORD: ''
+      DB_PASSWORD: root
       DB_NAME: cms_dev
       TEST_DB_NAME: cms_test
       MONGO_URL: 'mongodb://root:root@127.0.0.1:27017'
+      REDIS_URL: 'redis://localhost:6379'
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Use Node.js 24.x
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
+
+      - name: Run DB setup script
+        run: npm run db:setup
 
       - name: Lint code
         run: npm run lint
 
       - name: Format code
         run: npm run format
-
-      - name: Create databases
-        run: npm run db:setup
-
-      - name: Run migrations
-        run: npx mikro-orm migration:up
 
       - name: Run tests
         run: npm test
