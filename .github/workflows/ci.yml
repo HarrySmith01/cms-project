@@ -1,8 +1,4 @@
 # .github/workflows/ci.yml
-# Description: Continuous Integration workflow for CMS project
-# Created: July 22, 2025, 11:45 AM IST
-# Updated: July 23, 2025, 12:00 PM IST
-
 name: CI
 
 on:
@@ -21,6 +17,7 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+          MYSQL_DATABASE: cms_dev
         ports:
           - 3306:3306
         options: >-
@@ -37,12 +34,13 @@ jobs:
         ports:
           - 27017:27017
         options: >-
-          --health-cmd="mongo --username root --password root --eval 'db.adminCommand({ ping: 1 })'"
+          --health-cmd="mongo --username root --password root --authenticationDatabase admin --eval 'db.adminCommand({ ping: 1 })'"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
 
     env:
+      # MySQL
       DB_TYPE: mysql
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
@@ -50,7 +48,9 @@ jobs:
       DB_PASSWORD: root
       DB_NAME: cms_dev
       TEST_DB_NAME: cms_test
-      MONGO_URL: 'mongodb://root:root@127.0.0.1:27017'
+      # MongoDB (note authSource=admin)
+      MONGO_URL: 'mongodb://root:root@127.0.0.1:27017/?authSource=admin'
+      # Redis not used in CI
       REDIS_URL: 'redis://localhost:6379'
 
     steps:
@@ -65,7 +65,7 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: Run DB setup script
+      - name: Setup Databases
         run: npm run db:setup
 
       - name: Lint code
