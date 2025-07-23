@@ -9,8 +9,7 @@ import { SysDictionary } from '../entities/SysDictionary';
 import { enqueueExtensionJob } from '../jobs/extensionEngine';
 
 export class DictionarySubscriber
-  implements EntitySubscriberInterface<SysDictionary>
-{
+implements EntitySubscriberInterface<SysDictionary> {
   /**
    * Listen to SysDictionary entity changes
    */

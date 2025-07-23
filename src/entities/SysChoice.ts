@@ -3,7 +3,9 @@
 // Created: 2025-07-25TXX:XX:XX+05:30
 // Updated: 2025-07-25TXX:XX:XX+05:30
 
-import { Entity, PrimaryKey, Property, Index } from '@mikro-orm/core';
+import {
+  Entity, PrimaryKey, Property, Index,
+} from '@mikro-orm/core';
 
 @Entity({ tableName: 'sys_choice' })
 @Index({
@@ -12,41 +14,41 @@ import { Entity, PrimaryKey, Property, Index } from '@mikro-orm/core';
 })
 export class SysChoice {
   @PrimaryKey({ type: 'uuid' })
-  sys_id!: string;
+    sys_id!: string;
 
   @Property({ length: 100 })
-  element!: string;
+    element!: string;
 
   @Property({ length: 100 })
-  name!: string;
+    name!: string;
 
   @Property({ length: 100 })
-  label!: string;
+    label!: string;
 
   @Property({ length: 40 })
-  value!: string;
+    value!: string;
 
   @Property({ type: 'number', default: 0 })
-  sequence: number = 0;
+    sequence: number = 0;
 
   @Property({ length: 40 })
-  language!: string;
+    language!: string;
 
   @Property({ type: 'boolean', default: true })
-  active: boolean = true;
+    active: boolean = true;
 
   @Property({ type: 'date', onCreate: () => new Date() })
-  sys_created_on: Date = new Date();
+    sys_created_on: Date = new Date();
 
   @Property({ length: 40, nullable: true })
-  sys_created_by?: string;
+    sys_created_by?: string;
 
   @Property({ type: 'date', onUpdate: () => new Date() })
-  sys_updated_on: Date = new Date();
+    sys_updated_on: Date = new Date();
 
   @Property({ length: 40, nullable: true })
-  sys_updated_by?: string;
+    sys_updated_by?: string;
 
   @Property({ type: 'number', default: 0 })
-  sys_mod_count: number = 0;
+    sys_mod_count: number = 0;
 }

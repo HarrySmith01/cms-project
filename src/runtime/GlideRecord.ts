@@ -99,10 +99,9 @@ export class GlideRecord {
     }
     const repo = this.em.getRepository(this.table);
     const result = await repo.nativeInsert({ ...data });
-    const sysId =
-      typeof result === 'object' && 'insertId' in result
-        ? (result as { insertId: unknown }).insertId
-        : result;
+    const sysId = typeof result === 'object' && 'insertId' in result
+      ? (result as { insertId: unknown }).insertId
+      : result;
     const raw = await repo.findOneOrFail({ sys_id: sysId });
     return new DynamicRecord(this.table, this.cache, raw);
   }
@@ -113,7 +112,7 @@ export class GlideRecord {
   async update(data: Record<string, unknown>): Promise<number> {
     const repo = this.em.getRepository(this.table);
     const where = Object.fromEntries(
-      this.conditions.map((cond) => [cond.field, cond.value])
+      this.conditions.map((cond) => [cond.field, cond.value]),
     );
     return repo.nativeUpdate(where as Record<string, unknown>, data);
   }
@@ -124,7 +123,7 @@ export class GlideRecord {
   async delete(): Promise<number> {
     const repo = this.em.getRepository(this.table);
     const where = Object.fromEntries(
-      this.conditions.map((cond) => [cond.field, cond.value])
+      this.conditions.map((cond) => [cond.field, cond.value]),
     );
     return repo.nativeDelete(where as Record<string, unknown>);
   }

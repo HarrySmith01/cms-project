@@ -12,7 +12,7 @@ import { SysDictionary } from '../entities/SysDictionary';
  */
 export async function enqueueExtensionJob(
   eventType: 'create' | 'update' | 'delete',
-  dictEntry: SysDictionary
+  dictEntry: SysDictionary,
 ): Promise<void> {
   // Direct execution for simplicity; can swap in BullMQ in future
   await runExtensionJob(eventType, dictEntry);
@@ -24,7 +24,7 @@ export async function enqueueExtensionJob(
  */
 export async function runExtensionJob(
   eventType: 'create' | 'update' | 'delete',
-  dictEntry: SysDictionary
+  dictEntry: SysDictionary,
 ): Promise<void> {
   const orm = await MikroORM.init();
   const em = orm.em.fork();
@@ -64,9 +64,9 @@ export async function runExtensionJob(
         type: mapToSqlType(dictEntry),
         nullable: dictEntry.mandatory === false,
         default:
-          typeof dictEntry.default_value === 'string' ||
-          typeof dictEntry.default_value === 'number' ||
-          typeof dictEntry.default_value === 'boolean'
+          typeof dictEntry.default_value === 'string'
+          || typeof dictEntry.default_value === 'number'
+          || typeof dictEntry.default_value === 'boolean'
             ? dictEntry.default_value
             : undefined,
       };
@@ -78,7 +78,7 @@ export async function runExtensionJob(
       } else {
         await generator.dropColumn(child, dictEntry.element);
       }
-    })
+    }),
   );
 
   await em.flush();
@@ -90,13 +90,12 @@ export async function runExtensionJob(
  */
 function mapToSqlType(entry: SysDictionary): string {
   const internalType = entry.internal_type;
-  const typeName =
-    internalType !== null &&
-    typeof internalType === 'object' &&
-    'name' in internalType &&
-    typeof (internalType as Record<string, unknown>).name === 'string'
-      ? (internalType as Record<string, string>).name
-      : '';
+  const typeName = internalType !== null
+    && typeof internalType === 'object'
+    && 'name' in internalType
+    && typeof (internalType as Record<string, unknown>).name === 'string'
+    ? (internalType as Record<string, string>).name
+    : '';
 
   switch (typeName) {
     case 'string':

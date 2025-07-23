@@ -21,39 +21,39 @@ export class SysPackageDependencyM2M {
   /** Primary key (UUID) */
   @PrimaryKey({ type: 'uuid' })
   @Index()
-  sys_id: string = uuid();
+    sys_id: string = uuid();
 
   /** Parent package */
   @ManyToOne(() => SysPackage)
-  sys_package!: SysPackage;
+    sys_package!: SysPackage;
 
   /** Dependent package */
   @ManyToOne(() => SysPackage)
-  dependency!: SysPackage;
+    dependency!: SysPackage;
 
   /** Minimum version required */
   @Property({ length: 40, nullable: true })
-  min_version?: string;
+    min_version?: string;
 
   // audit fields
 
   /** When this record was created */
   @Property()
-  sys_created_on: Date = new Date();
+    sys_created_on: Date = new Date();
 
   /** Who created this record (user sys_id) */
   @Property({ length: 40 })
-  sys_created_by!: string;
+    sys_created_by!: string;
 
   /** When this record was last updated */
   @Property({ onUpdate: () => new Date(), nullable: true })
-  sys_updated_on?: Date;
+    sys_updated_on?: Date;
 
   /** Who last updated this record (user sys_id) */
   @Property({ length: 40, nullable: true })
-  sys_updated_by?: string;
+    sys_updated_by?: string;
 
   /** Modification count */
   @Property({ default: 0 })
-  sys_mod_count: number = 0;
+    sys_mod_count: number = 0;
 }
