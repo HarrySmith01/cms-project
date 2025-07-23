@@ -1,4 +1,3 @@
-// tests/mikro-config.test.ts
 /* eslint-disable @typescript-eslint/no-require-imports, import/no-unresolved */
 /**
  * tests/mikro-config.test.ts

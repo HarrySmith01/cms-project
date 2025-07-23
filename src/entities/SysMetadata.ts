@@ -1,17 +1,9 @@
-/* eslint-disable import/prefer-default-export, object-curly-newline */
-/**
- * File: src/entities/SysMetadata.ts
+/* File: src/entities/SysMetadata.ts
  * Description: Stores high-level metadata about tables and columns in the CMS.
  * Created: 2025-07-23T09:00:00+05:30
- * Updated: 2025-07-23T17:00:00+05:30
+ * Updated: 2025-07-23T18:15:00+05:30
  */
-import {
-  Entity,
-  Property,
-  PrimaryKey,
-  ManyToOne,
-  Index,
-} from '@mikro-orm/core';
+import { Entity, Property, PrimaryKey, ManyToOne } from '@mikro-orm/core';
 import { v4 as uuid } from 'uuid';
 import { SysScope } from './SysScope';
 import { SysPackage } from './SysPackage';
@@ -20,52 +12,49 @@ import { SysPackage } from './SysPackage';
 export class SysMetadata {
   /** Primary key (UUID) */
   @PrimaryKey({ type: 'uuid' })
-  @Index()
-    sys_id: string = uuid();
+  sys_id: string = uuid();
 
-  /** Reference to application scope */
-  @ManyToOne(() => SysScope, { nullable: false })
-  @Index()
-    sys_scope!: SysScope;
+  /** Reference to application scope (indexed) */
+  @ManyToOne(() => SysScope, { nullable: false, index: true })
+  sys_scope!: SysScope;
 
   /** Name of the class/table this metadata describes */
   @Property()
-    sys_class_name!: string;
+  sys_class_name!: string;
 
   /** When the metadata record was created */
   @Property()
-    sys_created_on: Date = new Date();
+  sys_created_on: Date = new Date();
 
   /** User who created this metadata record */
   @Property()
-    sys_created_by!: string;
+  sys_created_by!: string;
 
   /** Display name for this metadata record */
   @Property()
-    sys_name!: string;
+  sys_name!: string;
 
-  /** Owning package/application (optional) */
-  @ManyToOne(() => SysPackage, { nullable: true })
-  @Index()
-    sys_package?: SysPackage;
+  /** Owning package/application (optional, indexed) */
+  @ManyToOne(() => SysPackage, { nullable: true, index: true })
+  sys_package?: SysPackage;
 
   /** Protection policy identifier */
   @Property()
-    sys_policy!: string;
+  sys_policy!: string;
 
   /** Name of the update set this metadata belongs to */
   @Property()
-    sys_update_name!: string;
+  sys_update_name!: string;
 
   /** When the metadata record was last updated */
   @Property({ onUpdate: () => new Date() })
-    sys_updated_on: Date = new Date();
+  sys_updated_on: Date = new Date();
 
   /** User who last updated this metadata record */
   @Property()
-    sys_updated_by!: string;
+  sys_updated_by!: string;
 
   /** Count of modifications to this record */
   @Property({ default: 0 })
-    sys_mod_count: number = 0;
+  sys_mod_count: number = 0;
 }

@@ -3,55 +3,72 @@
  * File: mikro-orm.config.ts
  * Description: Configuration for MikroORM with MySQL/MongoDB dual-DB support.
  * Created: 2025-07-22T10:00:00+05:30
- * Updated: 2025-07-25T21:30:00+05:30
+ * Updated: 2025-07-26T09:00:00+05:30
  */
 
-import 'dotenv/config';
-// 👇 use the MySQL-specific defineConfig helper
+import { config as loadEnv } from 'dotenv';
 import { defineConfig } from '@mikro-orm/mysql';
 import { MySqlDriver } from '@mikro-orm/mysql';
 import { MongoDriver } from '@mikro-orm/mongodb';
 // import { DictionarySubscriber } from './src/subscribers/DictionarySubscriber';
 
-export const dbType = process.env.DB_TYPE === 'mongo' ? 'mongo' : 'mysql';
+//
+// 1) load the right .env file based on NODE_ENV
+//
+export const env = process.env.NODE_ENV ?? 'development';
+loadEnv({ path: `.env.${env}` });
 
-export default defineConfig({
+//
+// 2) detect whether we’re on Mongo or MySQL
+//
+export const dbType = process.env.DB_TYPE === 'mongo' ? 'mongo' : 'mysql';
+export const isMongo = dbType === 'mongo';
+
+const config = defineConfig({
   // allow CLI to load TS directly
   tsNode: true,
 
   // driver selection
   // @ts-expect-error: driver signature mismatch is acceptable
-  driver: dbType === 'mongo' ? MongoDriver : MySqlDriver,
+  driver: isMongo ? MongoDriver : MySqlDriver,
 
-  dbName: 'cms',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  host: process.env.DB_HOST || 'localhost',
+  //
+  // 3) database name: always from DB_NAME in the chosen .env file
+  //
+  dbName: isMongo ? undefined : process.env.DB_NAME,
 
-  // MongoDB connection string (if using Mongo)
-  clientUrl:
-    dbType === 'mongo'
-      ? process.env.MONGO_URL || 'mongodb://localhost:27017/cms'
-      : undefined,
+  //
+  // 4) MySQL connection settings
+  //
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT ? Number(process.env.DB_PORT) : undefined,
 
-  // debug logging for CLI
+  //
+  // 5) MongoDB connection string
+  //
+  clientUrl: isMongo ? process.env.MONGO_URL : undefined,
+
+  //
+  // 6) logging & debug
+  //
   debug: true,
   logger: (msg) => console.log(msg),
 
-  // runtime entities (compiled JS)
+  //
+  // 7) where to find your entities
+  //
   entities: ['./dist/entities/**/*.js'],
-
-  // CLI entities (TS sources)
   entitiesTs: ['./src/entities/**/*.ts'],
 
-  // migrations
+  //
+  // 8) migrations and seeders
+  //
   migrations: {
     path: './migrations',
-    // ignore .d.ts files
     glob: '!(*.d).{js,ts}',
   },
-
-  // seeders
   seeder: {
     path: './src/seeders',
     defaultSeeder: 'DatabaseSeeder',
@@ -59,3 +76,9 @@ export default defineConfig({
 
   // subscribers: [DictionarySubscriber], // re-enable when ready
 });
+
+// Named-export the bits your tests need:
+export { dbType, isMongo, env };
+
+// Default export remains the full config object:
+export default config;

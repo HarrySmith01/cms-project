@@ -1,9 +1,77 @@
 # Project Structure
-
 - config/
   - redis.config.ts
+- dist/
+  - mikro-orm.config.js
+  - scripts/
+    - debug-by-entity.js
+    - debug-entities.js
+    - debug-entity-load.js
+  - src/
+    - entities/
+      - BatchInstallPlan.js
+      - BusinessCalendar.js
+      - CmnBuilding.js
+      - CmnCostCenter.js
+      - CmnDepartment.js
+      - CmnLocation.js
+      - CmnSchedule.js
+      - CoreCompany.js
+      - GswContent.js
+      - index.js
+      - LdapServerConfig.js
+      - RateType.js
+      - RollbackContext.js
+      - SnHrIntegrationsSource.js
+      - Subscription.js
+      - SubscriptionEntitlement.js
+      - SysChoice.js
+      - SysDbObject.js
+      - SysDictionary.js
+      - SysDomain.js
+      - SysFilterOptionDynamic.js
+      - SysGlideObject.js
+      - SysGroupHasRole.js
+      - SysMetadata.js
+      - SysPackage.js
+      - SysPackageDependencyItem.js
+      - SysPackageDependencyM2M.js
+      - SysPerspective.js
+      - SysPlugin.js
+      - SysProperty.js
+      - SysRemoteUpdateSet.js
+      - SysScope.js
+      - SysSecurityAcl.js
+      - SysSecurityAclRole.js
+      - SysSecurityAttribute.js
+      - SysSecurityOperation.js
+      - SysUpdateSet.js
+      - SysUpdateSetSource.js
+      - SysUser.js
+      - SysUserGrmember.js
+      - SysUserGroup.js
+      - SysUserHasRole.js
+      - SysUserRole.js
+      - TimeSheetPolicy.js
+      - VPlugin.js
+    - jobs/
+      - extensionEngine.js
+    - runtime/
+      - DynamicRecord.js
+      - GlideRecord.js
+      - MetadataCache.js
+    - subscribers/
+      - DictionarySubscriber.js
+    - utils/
+      - queue.js
+  - tests/
+    - ci-trigger.test.js
+    - mikro-config-test.js
+    - mikro-config.test.js
+- docker-compose.yml
 - docs/
   - ci-test.md
+  - database-setup.md
   - dependencies.md
   - project-structure.md
   - risks.md
@@ -14,10 +82,17 @@
   - version-log.md
 - eslint.config.cjs
 - jest.config.cjs
+- migrations/
+  - Migration20250723121642.ts
 - mikro-orm.config.ts
 - package-lock.json
 - package.json
 - README.md
+- scripts/
+  - db-setup.ts
+  - debug-by-entity.ts
+  - debug-entities.ts
+  - debug-entity-load.ts
 - src/
   - entities/
     - BatchInstallPlan.ts
@@ -39,7 +114,6 @@
     - SysChoice.ts
     - SysDbObject.ts
     - SysDictionary.ts
-    - SysDomain.ts
     - SysFilterOptionDynamic.ts
     - SysGlideObject.ts
     - SysGroupHasRole.ts
@@ -83,7 +157,11 @@
 - tests/
   - ci-trigger.test.ts
   - code-quality.test.js
+  - db-connect-test.js
+  - db-setup.test.ts
   - generate-structure.js
+  - migrations/
+    - initial.test.ts
   - mikro-config-test.ts
   - mikro-config.test.ts
 - tools/

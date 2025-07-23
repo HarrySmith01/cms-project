@@ -29,18 +29,13 @@ jobs:
           - 27017:27017
 
     env:
-      # MySQL
       DB_TYPE: mysql
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: root
       DB_NAME: cms_dev
-      TEST_DB_NAME: cms_test
-      # MongoDB (authSource=admin)
-      MONGO_URL: >-
-        mongodb://root:root@127.0.0.1:27017/?authSource=admin
-      # Redis (unused in CI)
+      MONGO_URL: mongodb://root:root@127.0.0.1:27017/?authSource=admin
       REDIS_URL: redis://localhost:6379
 
     steps:
@@ -58,23 +53,20 @@ jobs:
 
       - name: Wait for MySQL
         run: |
-          set -euo pipefail
           echo "⏳ Waiting for MySQL..."
           for i in {1..12}; do
             if mysqladmin ping --host=127.0.0.1 --silent; then
               echo "✅ MySQL ready"
               break
             fi
-            echo "  MySQL not ready yet ($i/12)..."
+            echo "  MySQL not ready ($i/12)..."
             sleep 5
           done
 
-      - name: Wait for Mongo
+      - name: Wait for MongoDB
         run: |
-          set -euo pipefail
           echo "⏳ Waiting for MongoDB..."
           for i in {1..12}; do
-            # use docker exec to call the container's mongosh binary
             if docker exec $(docker ps -q -f ancestor=mongo:8.0) \
                  mongosh --username root --password root \
                          --authenticationDatabase admin \
@@ -83,12 +75,15 @@ jobs:
               echo "✅ MongoDB ready"
               break
             fi
-            echo "  MongoDB not ready yet ($i/12)..."
+            echo "  MongoDB not ready ($i/12)..."
             sleep 5
           done
 
-      - name: Setup DBs (migrations + seed)
-        run: npm run db:setup
+      - name: Setup Dev DB
+        run: npm run db:setup:dev
+
+      - name: Setup Test DB
+        run: npm run db:setup:test
 
       - name: Lint
         run: npm run lint

@@ -6,123 +6,115 @@
 
 See [docs/project-structure.md](docs/project-structure.md) for the project folder structure.
 
-## Code Quality
+## Prerequisites
 
-Run `npm run lint` to check code with ESLint.  
-Run `npm run format` to format code with Prettier.
+- Node.js v24.x
+- Docker & Docker Compose (for MySQL/MongoDB services)
+- Redis (if using caching or job queues locally)
+- A `.env` file in the project root (see [docs/database-setup.md](docs/database-setup.md))
 
-## Redis Setup
+## Quick Start
 
-Configure Redis via `.env` with `REDIS_URL=redis://localhost:6379` for caching and job queues.
+```bash
+# 1. Install dependencies
+npm ci
 
-## Risk Management
+# 2. Create databases (development + test)
+npm run db:setup:dev
+npm run db:setup:test
 
-See our full [Risks and Dependencies](docs/risks.md) register for a breakdown of libraries, versions, and mitigations.
+# 3. Run in development mode (auto-reload)
+npm run dev
 
-## Project Structure Creation (project-structure.md)
+# 4. Build for production
+npm run build
 
-node tests\generate-structure.js
+# 5. Run production server
+npm run prod
 
-## Lint Find and Fix
+# Code Quality
 
+# Lint all files (report only)
 npm run lint
+
+# Lint + auto-fix
 npm run lint -- --fix
 
-# Generate one “baseline” migration that creates all tables/indexes/fks
+# Format all files
+npm run format
 
-npx mikro-orm migration:create --initial
+# Migrations
 
-# Compare your current entities against the last migration,
+# Create a new migration (scaffold diffs)
+npm run migration:create
 
-# Preview SQL diff (no file output):
+# Apply pending migrations
+npm run migration:up
 
-npx mikro-orm migration:create --dump
+# Roll back the last migration
+npm run migration:down
 
-# Preview SQL diff (no file output):
+# Show migration status
+npm run migration:status
 
-npx mikro-orm migration:create --dump
 
-# Compare your current entities against the last migration,
+npm run migration:up:dev
+npm run migration:up:test
+npm run migration:up:prod
 
-# then scaffold a new migration containing only the diffs
 
-npx mikro-orm migration:create
+# Testing
 
-# Actually emit a new migration file:
+# Start server in test mode (NODE_ENV=test)
+npm run test
 
-npx mikro-orm migration:create
+# Run Jest tests without starting the server
+npm run test:ci
 
-# Show the SQL that “up” would execute (no commit)
+# Run tests with coverage report
+npm run test:cover
 
-npx mikro-orm schema:update --dump
-
-# Run pending migrations against your configured database:
-
-# Ensure your .env has DB_TYPE, DB_HOST, DB_USER, DB_PASSWORD, etc.
-
-npx mikro-orm migration:up
-
-# Rollback Migration:
-
-npx mikro-orm migration:down
-
-## Entity Reference
-
-| Entity                 | File                                 | Description                                              |
-| ---------------------- | ------------------------------------ | -------------------------------------------------------- |
-| **SysUser**            | `src/entities/SysUser.ts`            | Stores user accounts and credentials (sys_user table).   |
-| **SysUserGroup**       | `src/entities/SysUserGroup.ts`       | Defines user groups (sys_user_group table).              |
-| **SysUserRole**        | `src/entities/SysUserRole.ts`        | Defines roles/permissions bundles (sys_user_role table). |
-| **SysUserGrmember**    | `src/entities/SysUserGrmember.ts`    | M2M: Users ↔ Groups (sys_user_grmember table).          |
-| **SysUserHasRole**     | `src/entities/SysUserHasRole.ts`     | M2M: Users ↔ Roles (sys_user_has_role table).           |
-| **SysGroupHasRole**    | `src/entities/SysGroupHasRole.ts`    | M2M: Groups ↔ Roles (sys_group_has_role table).         |
-| **SysSecurityAcl**     | `src/entities/SysSecurityAcl.ts`     | ACL definitions for tables/fields/operations.            |
-| **SysSecurityAclRole** | `src/entities/SysSecurityAclRole.ts` | M2M: ACL rules ↔ Roles (sys_security_acl_role table).   |
-
-# Docker Commands
-
-# Note: Docker, MySql , Mongo DB must need to be installed
-
-# 1. Start services in detached mode
-
+# Docker
+# Start MySQL + MongoDB via docker-compose
 docker-compose up -d
 
-# 2. Verify containers are running
-
+# View running containers
 docker-compose ps
 
-# 3. (Optional) View MySQL logs
-
+# View logs
 docker-compose logs -f mysql
-
-# 4. (Optional) View MongoDB logs
-
 docker-compose logs -f mongodb
 
-# 5. Stop Docker
-
+# Tear down
 docker-compose down
 
-# Other Doker Command
+# Git Workflow
 
-docker version
-docker compose version
-docker compose up -d
-
-See [Database Setup docs](docs/database-setup.md) for full instructions.
-
-# 1. Check Git Status
-
+# 1. Check what’s changed
 git status
 
-# 2. Stage every changed file
-
+# 2. Stage all changes
 git add .
 
-# 3. Commit with a descriptive message
-
+# 3. Commit with a clear message
 git commit -m "ci: add db:setup script and update CI workflow"
 
-# 4. Push to your develop branch
-
+# 4. Push to your branch
 git push origin develop
+
+```
+
+npm run docker:dev # Spin up MySQL+Mongo for development
+npm run docker:test # Spin up MySQL+Mongo for testing
+npm run docker:prod # Spin up MySQL+Mongo for production
+
+npm run docker:stop:dev # Tear down dev stack
+npm run docker:stop:test # Tear down test stack
+npm run docker:stop:prod # Tear down prod stack
+
+npm run db:setup:dev # Create dev & test DBs in MySQL
+npm run db:setup:test # Create only test DB
+npm run db:setup:prod # Create only prod DB
+
+npm run migration:up:dev # Run dev migrations
+npm run migration:down:test # Roll back test migration

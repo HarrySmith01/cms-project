@@ -819,12 +819,12 @@
         },
         "attributes": {
           "name": "attributes",
-          "type": "varchar(4000)",
+          "type": "varchar(800)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 4000,
+          "length": 800,
           "mappedType": "string"
         },
         "dn_field": {
@@ -1008,12 +1008,12 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(4000)",
+          "type": "varchar(800)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 4000,
+          "length": 800,
           "mappedType": "string"
         },
         "sys_domain": {
@@ -2853,14 +2853,6 @@
       "name": "sys_metadata",
       "indexes": [
         {
-          "columnNames": ["sys_id"],
-          "composite": false,
-          "keyName": "sys_metadata_sys_id_index",
-          "constraint": false,
-          "primary": false,
-          "unique": false
-        },
-        {
           "columnNames": ["sys_scope_sys_id"],
           "composite": false,
           "keyName": "sys_metadata_sys_scope_sys_id_index",
@@ -2872,22 +2864,6 @@
           "columnNames": ["sys_package_sys_id"],
           "composite": false,
           "keyName": "sys_metadata_sys_package_sys_id_index",
-          "constraint": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "sys_metadata_sys_scope_sys_id_index",
-          "columnNames": ["sys_scope_sys_id"],
-          "composite": false,
-          "constraint": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "sys_metadata_sys_package_sys_id_index",
-          "columnNames": ["sys_package_sys_id"],
-          "composite": false,
           "constraint": false,
           "primary": false,
           "unique": false
@@ -3195,14 +3171,6 @@
       "name": "sys_filter_option_dynamic",
       "indexes": [
         {
-          "columnNames": ["sys_id"],
-          "composite": false,
-          "keyName": "sys_filter_option_dynamic_sys_id_index",
-          "constraint": false,
-          "primary": false,
-          "unique": false
-        },
-        {
           "columnNames": ["sys_scope_sys_id"],
           "composite": false,
           "keyName": "sys_filter_option_dynamic_sys_scope_sys_id_index",
@@ -3214,22 +3182,6 @@
           "columnNames": ["sys_package_sys_id"],
           "composite": false,
           "keyName": "sys_filter_option_dynamic_sys_package_sys_id_index",
-          "constraint": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "sys_filter_option_dynamic_sys_scope_sys_id_index",
-          "columnNames": ["sys_scope_sys_id"],
-          "composite": false,
-          "constraint": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "sys_filter_option_dynamic_sys_package_sys_id_index",
-          "columnNames": ["sys_package_sys_id"],
-          "composite": false,
           "constraint": false,
           "primary": false,
           "unique": false
@@ -4890,12 +4842,12 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(4000)",
+          "type": "varchar(800)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 4000,
+          "length": 800,
           "mappedType": "string"
         },
         "order": {
@@ -5409,12 +5361,12 @@
         },
         "value": {
           "name": "value",
-          "type": "varchar(4000)",
+          "type": "varchar(800)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 4000,
+          "length": 800,
           "mappedType": "string"
         },
         "description": {
@@ -5672,12 +5624,12 @@
         },
         "banner_text": {
           "name": "banner_text",
-          "type": "varchar(4000)",
+          "type": "varchar(800)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 4000,
+          "length": 800,
           "mappedType": "string"
         },
         "business_owners": {
@@ -5764,12 +5716,12 @@
         },
         "ecovadis_assessment_status": {
           "name": "ecovadis_assessment_status",
-          "type": "varchar(4000)",
+          "type": "varchar(800)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 4000,
+          "length": 800,
           "mappedType": "string"
         },
         "engagement_risk_rating_sys_id": {
@@ -5835,12 +5787,12 @@
         },
         "justification": {
           "name": "justification",
-          "type": "varchar(2000)",
+          "type": "varchar(800)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 2000,
+          "length": 800,
           "mappedType": "string"
         },
         "ua_last_assessment_date": {
@@ -5938,12 +5890,12 @@
         },
         "notes": {
           "name": "notes",
-          "type": "varchar(4000)",
+          "type": "varchar(800)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 4000,
+          "length": 800,
           "mappedType": "string"
         },
         "num_employees": {
@@ -8442,12 +8394,12 @@
         },
         "notes": {
           "name": "notes",
-          "type": "varchar(4000)",
+          "type": "varchar(800)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 4000,
+          "length": 800,
           "mappedType": "string"
         },
         "sys_created_on": {
@@ -10459,12 +10411,12 @@
         },
         "dynamic_creation_script": {
           "name": "dynamic_creation_script",
-          "type": "varchar(4000)",
+          "type": "varchar(800)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 4000,
+          "length": 800,
           "mappedType": "string"
         },
         "dynamic_default_value_sys_id": {
@@ -10510,22 +10462,22 @@
         },
         "formula": {
           "name": "formula",
-          "type": "varchar(4000)",
+          "type": "varchar(800)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 4000,
+          "length": 800,
           "mappedType": "string"
         },
         "function_definition": {
           "name": "function_definition",
-          "type": "varchar(4000)",
+          "type": "varchar(800)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 4000,
+          "length": 800,
           "mappedType": "string"
         },
         "function_field": {

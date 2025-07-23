@@ -6,9 +6,9 @@ import { testMySQL, testMongo } from './db-connect-test';
 describe('DB Environment Connectivity', () => {
   it('connects to MySQL without errors', async () => {
     await expect(testMySQL()).resolves.not.toThrow();
-  }, 20000);
+  }, 8000);
 
   it('connects to MongoDB without errors', async () => {
     await expect(testMongo()).resolves.not.toThrow();
-  }, 20000);
+  }, 8000);
 });

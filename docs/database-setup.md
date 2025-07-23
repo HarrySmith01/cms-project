@@ -3,7 +3,7 @@
 Path: docs/database-setup.md
 Description: Detailed instructions for setting up the CMS databases (MySQL & MongoDB) via Docker, Ubuntu VPS, and Windows local.
 Created: 2025-07-23T16:30:00+05:30
-Updated: 2025-07-23T16:30:00+05:30
+Updated: 2025-07-25T14:00:00+05:30
 -->
 
 # Database Setup
@@ -30,7 +30,14 @@ Updated: 2025-07-23T16:30:00+05:30
    docker compose logs -f mongodb
    ```
 
-5. To stop & remove:
+5. Initialize the databases (development & test):
+
+   ```bash
+   npm run db:setup:dev
+   npm run db:setup:test
+   ```
+
+6. To stop & remove:
 
    ```bash
    docker compose down
@@ -85,42 +92,44 @@ sudo systemctl enable mongod
 
 ## Environment Variables
 
-At the project root, copy and edit:
+1. Copy the example:
 
-```bash
-cp .env.example .env
-```
+   ```bash
+   cp .env.example .env
+   ```
 
-Ensure these values match your installations:
+2. Edit `.env` to match your setup:
 
-```dotenv
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=       # blank if no password
-DB_NAME=cms_dev
-TEST_DB_NAME=cms_test
+   ```dotenv
+   DB_TYPE=mysql
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USER=root
+   DB_PASSWORD=       # leave blank if no password
+   DB_NAME=cms_dev
+   TEST_DB_NAME=cms_test
 
-MONGO_URL=mongodb://localhost:27017/cms
-```
+   MONGO_URL=mongodb://localhost:27017/cms
+   REDIS_URL=redis://localhost:6379
+   ```
 
 ---
 
 ## Verify Connections
 
-1. Install test dependencies (once):
+1. Install test utilities (once):
 
    ```bash
    npm install mysql2 mongodb dotenv --save-dev
    ```
 
-2. Run the connection test:
+2. Run manual connection test:
 
    ```bash
    node tests/db-connect-test.js
    ```
 
-3. Run automated Jest test:
+3. Run full CI test suite:
 
    ```bash
    npm test
@@ -134,10 +143,9 @@ MONGO_URL=mongodb://localhost:27017/cms
 - **Service Status**:
 
   - Ubuntu: `systemctl status mysql`, `systemctl status mongod`
-  - Windows: check **Services** for `MySQL` and `MongoDB` and ensure they’re **Running**.
+  - Windows: check **Services** for `MySQL` and `MongoDB`
 
-- **PATH issues (Windows)**:
-  If `docker` or `mongo` isn’t recognized, ensure the bin folders are in your **User** `PATH`, then restart your terminal.
+- **PATH issues (Windows)**: If `docker` or `mongosh` isn’t recognized, ensure their bin folders are in your **User** `PATH`, then restart your terminal.
 
 ```
 
