@@ -1,13 +1,15 @@
-// src/runtime/MetadataCache.ts
-// Description: Caches table, column, and metadata definitions from sys_db_object, sys_dictionary, and sys_metadata,
-//              and supports inheritance of dictionary entries from parent tables.
-// Created: 2025-07-24T14:30:00+05:30
-// Updated: 2025-07-25T09:00:00+05:30
+// File: src/utils/runtime/MetadataCache.ts
+/**
+ * Description: Caches table, column, and metadata definitions from sys_db_object,
+ *              sys_dictionary, and sys_metadata, supporting inheritance.
+ * Created: July 24, 2025 14:30 IST
+ * Updated: July 25, 2025 08:50 IST
+ */
 
 import { EntityManager } from '@mikro-orm/core';
-import { SysDbObject } from '../entities/SysDbObject';
-import { SysDictionary } from '../entities/SysDictionary';
-import { SysMetadata } from '../entities/SysMetadata';
+import { SysDbObject } from '../../entities/SysDbObject';
+import { SysDictionary } from '../../entities/SysDictionary';
+import { SysMetadata } from '../../entities/SysMetadata';
 
 export class MetadataCache {
   private em: EntityManager;
@@ -33,19 +35,15 @@ export class MetadataCache {
     ]);
 
     tbls.forEach((t) => this.tables.set(t.name, t));
-
     cols.forEach((c) => {
-      const table = c.sys_class_name;
-      const arr = this.columns.get(table) || [];
+      const arr = this.columns.get(c.sys_class_name) || [];
       arr.push(c);
-      this.columns.set(table, arr);
+      this.columns.set(c.sys_class_name, arr);
     });
-
     metas.forEach((m) => {
-      const table = m.sys_class_name;
-      const arr = this.metas.get(table) || [];
+      const arr = this.metas.get(m.sys_class_name) || [];
       arr.push(m);
-      this.metas.set(table, arr);
+      this.metas.set(m.sys_class_name, arr);
     });
   }
 
@@ -58,13 +56,13 @@ export class MetadataCache {
 
   /**
    * Recursively collect SysDictionary entries for a table,
-   * including those inherited from its parent hierarchy.
+   * including inherited entries from parent tables.
    */
   getColumns(tableName: string): SysDictionary[] {
     const own = this.columns.get(tableName) || [];
-    const parent = this.tables.get(tableName)?.super_class?.name;
-    if (parent) {
-      return [...this.getColumns(parent), ...own];
+    const parentName = this.tables.get(tableName)?.super_class?.name;
+    if (parentName) {
+      return [...this.getColumns(parentName), ...own];
     }
     return own;
   }

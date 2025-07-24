@@ -1,10 +1,13 @@
-// src/entities/SubscriptionEntitlement.ts
-import { Entity, PrimaryKey } from '@mikro-orm/core';
-import { v4 as uuid } from 'uuid';
+// File: src/entities/SubscriptionEntitlement.ts
+// Description: Placeholder for subscription entitlement details for licensing and feature access.
+// Created:     2025-07-27T01:20:00+05:30
+// Updated:     2025-07-27T01:20:00+05:30
 
+import { Entity } from '@mikro-orm/core';
+import { Packaged, BaseEntity, AclResource } from './BaseEntity';
+
+@AclResource('sys_subscription_entitlement')
 @Entity({ tableName: 'sys_subscription_entitlement' })
-export class SubscriptionEntitlement {
-  @PrimaryKey({ type: 'uuid' })
-    sys_id: string = uuid();
-  // TODO: add real fields here
+export class SubscriptionEntitlement extends Packaged(BaseEntity) {
+  // TODO: add real entitlement fields (e.g., feature_code, subscriptions)
 }

@@ -1,43 +1,31 @@
-// src/entities/CmnSchedule.ts
+// File: src/entities/CmnSchedule.ts
 // Description: Represents advanced schedule definitions for documents or jobs.
-// Created: 2025-07-25TXX:XX:XX+05:30
-// Updated: 2025-07-25TXX:XX:XX+05:30
+// Created:     2025-07-26T23:40:00+05:30
+// Updated:     2025-07-26T23:40:00+05:30
 
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/core';
+import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
+@AclResource('cmn_schedule')
 @Entity({ tableName: 'cmn_schedule' })
-export class CmnSchedule {
-  @PrimaryKey()
-    sys_id!: string;
-
+export class CmnSchedule extends Packaged(BaseEntity) {
+  /** Document reference (optional) */
   @Property({ length: 40, nullable: true })
-    document?: string;
+  document?: string;
 
+  /** Key within the document (optional) */
   @Property({ length: 32, nullable: true })
-    document_key?: string;
+  document_key?: string;
 
+  /** Human-readable schedule name */
   @Property({ length: 80 })
-    name!: string;
+  name!: string;
 
+  /** Read-only flag */
   @Property({ type: 'boolean', default: false })
-    read_only: boolean = false;
+  read_only: boolean = false;
 
+  /** Schedule type (optional) */
   @Property({ length: 40, nullable: true })
-    type?: string;
-
-  // audit fields
-  @Property({ type: 'datetime', nullable: true })
-    sys_created_on?: Date;
-
-  @Property({ length: 40, nullable: true })
-    sys_created_by?: string;
-
-  @Property({ type: 'datetime', nullable: true })
-    sys_updated_on?: Date;
-
-  @Property({ length: 40, nullable: true })
-    sys_updated_by?: string;
-
-  @Property({ type: 'number', nullable: true })
-    sys_mod_count?: number;
+  type?: string;
 }

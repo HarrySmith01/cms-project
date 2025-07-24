@@ -1,60 +1,51 @@
-// src/entities/BusinessCalendar.ts
+// File: src/entities/BusinessCalendar.ts
 // Description: Defines named business calendars, their types, labels, hierarchy, and time zone.
-// Created: 2025-07-25TXX:XX:XX+05:30
-// Updated: 2025-07-25TXX:XX:XX+05:30
+// Created:     2025-07-26T22:10:00+05:30
+// Updated:     2025-07-26T22:10:00+05:30
 
-import {
-  Entity, PrimaryKey, Property, ManyToOne,
-} from '@mikro-orm/core';
+import { Entity, Property, ManyToOne } from '@mikro-orm/core';
+import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
+@AclResource('business_calendar')
 @Entity({ tableName: 'business_calendar' })
-export class BusinessCalendar {
-  @PrimaryKey()
-    sys_id!: string;
-
+export class BusinessCalendar extends Packaged(BaseEntity) {
+  /** Calendar type (optional) */
   @Property({ length: 40, nullable: true })
-    cal_type?: string;
+  cal_type?: string;
 
+  /** Detailed description */
   @Property({ length: 1000, nullable: true })
-    description?: string;
+  description?: string;
 
+  /** Domain reference (optional) */
   @Property({ length: 32, nullable: true })
-    sys_domain?: string;
+  sys_domain?: string;
 
+  /** Domain path (optional) */
   @Property({ length: 255, nullable: true })
-    sys_domain_path?: string;
+  sys_domain_path?: string;
 
+  /** Legacy schedule flag */
   @Property({ type: 'boolean', default: false })
-    is_legacy_schedule: boolean = false;
+  is_legacy_schedule: boolean = false;
 
+  /** Display label */
   @Property({ length: 80 })
-    label!: string;
+  label!: string;
 
+  /** Internal calendar name */
   @Property({ length: 80, nullable: true })
-    calendar_name?: string;
+  calendar_name?: string;
 
+  /** Parent calendar for hierarchy */
   @ManyToOne(() => BusinessCalendar, { nullable: true })
-    parent?: BusinessCalendar;
+  parent?: BusinessCalendar;
 
+  /** Plural form of the label */
   @Property({ length: 80, nullable: true })
-    plural_label?: string;
+  plural_label?: string;
 
+  /** Time zone identifier */
   @Property({ length: 40, nullable: true })
-    time_zone?: string;
-
-  // audit fields (manually included instead of via BaseEntity)
-  @Property({ type: 'datetime', nullable: true })
-    sys_created_on?: Date;
-
-  @Property({ length: 40, nullable: true })
-    sys_created_by?: string;
-
-  @Property({ type: 'datetime', nullable: true })
-    sys_updated_on?: Date;
-
-  @Property({ length: 40, nullable: true })
-    sys_updated_by?: string;
-
-  @Property({ type: 'number', nullable: true })
-    sys_mod_count?: number;
+  time_zone?: string;
 }

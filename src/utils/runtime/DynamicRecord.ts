@@ -4,8 +4,8 @@
 // Updated: 2025-07-25T12:00:00+05:30
 
 import { EntityManager } from '@mikro-orm/core';
-import { MetadataCache } from './MetadataCache';
-import { SysDictionary } from '../entities/SysDictionary';
+import { metadataCache } from '../metadataCache';
+import { SysDictionary } from '../../entities/SysDictionary';
 
 /**
  * Represents a single record of a dynamic table, with properties and references
@@ -17,15 +17,15 @@ export class DynamicRecord {
 
   private em: EntityManager;
 
-  private cache: MetadataCache;
+  private cache: metadataCache;
 
   private tableName: string;
 
   private constructor(
     tableName: string,
     initialData: Record<string, unknown>,
-    cache: MetadataCache,
-    em: EntityManager,
+    cache: metadataCache,
+    em: EntityManager
   ) {
     this.tableName = tableName;
     this.data = { ...initialData };
@@ -39,8 +39,8 @@ export class DynamicRecord {
   static create(
     tableName: string,
     initialData: Record<string, unknown>,
-    cache: MetadataCache,
-    em: EntityManager,
+    cache: metadataCache,
+    em: EntityManager
   ): DynamicRecord {
     const instance = new DynamicRecord(tableName, initialData, cache, em);
     return new Proxy(instance, {
@@ -52,7 +52,8 @@ export class DynamicRecord {
         const column = cache
           .getColumns(tableName)
           .find(
-            (c: SysDictionary) => c.element === propName || `${propName}_id` === c.element,
+            (c: SysDictionary) =>
+              c.element === propName || `${propName}_id` === c.element
           );
         if (!column) {
           return undefined;
@@ -95,16 +96,17 @@ export class DynamicRecord {
       // Update existing
       await repo.nativeUpdate(
         { sys_id: sysId },
-        this.data as Record<string, unknown>,
+        this.data as Record<string, unknown>
       );
     } else {
       // Insert new record
       const insertResult = await repo.nativeInsert(
-        this.data as Record<string, unknown>,
+        this.data as Record<string, unknown>
       );
-      const newId = typeof insertResult === 'object' && 'insertId' in insertResult
-        ? (insertResult as { insertId: unknown }).insertId
-        : insertResult;
+      const newId =
+        typeof insertResult === 'object' && 'insertId' in insertResult
+          ? (insertResult as { insertId: unknown }).insertId
+          : insertResult;
       this.data.sys_id = newId as string;
     }
     // Refresh full record and update internal data

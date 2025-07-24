@@ -1,9 +1,8 @@
-/* eslint-disable class-methods-use-this */
-// src/subscribers/DictionarySubscriber.ts
+// File: src/subscribers/DictionarySubscriber.ts
 // Description: Subscribes to SysDictionary CRUD events and enqueues a minimal
 //              job onto the BullMQ dictionary-schema queue (dictionaryQueue.ts).
 // Created: 2025-07-23T11:00:00+05:30
-// Updated: 2025-07-25T16:30:00+05:30
+// Updated: 2025-07-27T12:15:00+05:30
 
 import {
   EntitySubscriberInterface,
@@ -28,7 +27,7 @@ export class DictionarySubscriber
     const dict = event.entity;
     await dictionaryQueue.add('ddl', {
       action: 'create',
-      dictId: dict.id,
+      dictId: dict.sys_id,
     });
   }
 
@@ -37,7 +36,7 @@ export class DictionarySubscriber
     const dict = event.entity;
     await dictionaryQueue.add('ddl', {
       action: 'update',
-      dictId: dict.id,
+      dictId: dict.sys_id,
     });
   }
 
@@ -47,7 +46,7 @@ export class DictionarySubscriber
     if (!dict) return;
     await dictionaryQueue.add('ddl', {
       action: 'delete',
-      dictId: dict.id,
+      dictId: dict.sys_id,
     });
   }
 }

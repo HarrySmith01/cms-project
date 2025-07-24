@@ -4,7 +4,8 @@
 // Updated: 2025-07-25T10:00:00+05:30
 
 import { EntityManager } from '@mikro-orm/core';
-import { MetadataCache } from './MetadataCache';
+// Update the import path to the correct location of metadataCache
+import { metadataCache } from '../metadataCache';
 import { DynamicRecord } from './DynamicRecord';
 
 interface QueryCondition {
@@ -16,7 +17,7 @@ interface QueryCondition {
 export class GlideRecord {
   private table: string;
 
-  private cache: MetadataCache;
+  private cache: metadataCache;
 
   private em: EntityManager;
 
@@ -26,7 +27,7 @@ export class GlideRecord {
 
   private offsetCount?: number;
 
-  constructor(table: string, cache: MetadataCache, em: EntityManager) {
+  constructor(table: string, cache: metadataCache, em: EntityManager) {
     this.table = table;
     this.cache = cache;
     this.em = em;
@@ -99,9 +100,10 @@ export class GlideRecord {
     }
     const repo = this.em.getRepository(this.table);
     const result = await repo.nativeInsert({ ...data });
-    const sysId = typeof result === 'object' && 'insertId' in result
-      ? (result as { insertId: unknown }).insertId
-      : result;
+    const sysId =
+      typeof result === 'object' && 'insertId' in result
+        ? (result as { insertId: unknown }).insertId
+        : result;
     const raw = await repo.findOneOrFail({ sys_id: sysId });
     return new DynamicRecord(this.table, this.cache, raw);
   }
@@ -112,7 +114,7 @@ export class GlideRecord {
   async update(data: Record<string, unknown>): Promise<number> {
     const repo = this.em.getRepository(this.table);
     const where = Object.fromEntries(
-      this.conditions.map((cond) => [cond.field, cond.value]),
+      this.conditions.map((cond) => [cond.field, cond.value])
     );
     return repo.nativeUpdate(where as Record<string, unknown>, data);
   }
@@ -123,7 +125,7 @@ export class GlideRecord {
   async delete(): Promise<number> {
     const repo = this.em.getRepository(this.table);
     const where = Object.fromEntries(
-      this.conditions.map((cond) => [cond.field, cond.value]),
+      this.conditions.map((cond) => [cond.field, cond.value])
     );
     return repo.nativeDelete(where as Record<string, unknown>);
   }

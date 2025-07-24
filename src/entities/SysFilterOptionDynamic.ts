@@ -1,57 +1,63 @@
-// src/entities/SysFilterOptionDynamic.ts
-// Description: MikroORM entity for the sys_filter_option_dynamic table, including all sys_metadata fields via inheritance
-// Created: 2025-07-22 22:40:00
-// Updated: 2025-07-22 22:40:00
+// File: src/entities/SysFilterOptionDynamic.ts
+// Description: Entity for sys_filter_option_dynamic, storing dynamic filter options for fields.
+// Created:     2025-07-27T02:15:00+05:30
+// Updated:     2025-07-27T02:15:00+05:30
 
-import { Entity, Property, PrimaryKey } from '@mikro-orm/core';
-import { v4 } from 'uuid';
-import { SysMetadata } from './SysMetadata';
+import { Entity, Property } from '@mikro-orm/core';
+import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
+@AclResource('sys_filter_option_dynamic')
 @Entity({ tableName: 'sys_filter_option_dynamic' })
-export class SysFilterOptionDynamic extends SysMetadata {
-  /** Primary record identifier */
-  @PrimaryKey({ type: 'uuid' })
-    sys_id: string = v4();
+export class SysFilterOptionDynamic extends Packaged(BaseEntity) {
+  /** Available flag */
+  @Property({ default: false })
+  available_for_default!: boolean;
 
-  @Property({ type: 'boolean', default: false })
-    active!: boolean;
+  /** Available as filter */
+  @Property({ default: false })
+  available_for_filter!: boolean;
 
-  @Property({ type: 'boolean', default: false })
-    available_for_default!: boolean;
+  /** Available for reference qualifier */
+  @Property({ default: false })
+  available_for_ref_qual!: boolean;
 
-  @Property({ type: 'boolean', default: false })
-    available_for_filter!: boolean;
+  /** Field type (optional) */
+  @Property({ length: 32, nullable: true })
+  field_type?: string;
 
-  @Property({ type: 'boolean', default: false })
-    available_for_ref_qual!: boolean;
+  /** Display label */
+  @Property({ length: 40 })
+  label!: string;
 
-  @Property({ type: 'string', length: 32, nullable: true })
-    field_type?: string;
+  /** Order in sequence */
+  @Property({ default: 0 })
+  order!: number;
 
-  @Property({ type: 'string', length: 40 })
-    label!: string;
+  /** Script reference ID (optional) */
+  @Property({ length: 32, nullable: true })
+  script_reference_id?: string;
 
-  @Property({ type: 'number', default: 0 })
-    order!: number;
+  /** Script reference table (optional) */
+  @Property({ length: 80, nullable: true })
+  script_reference_table?: string;
 
-  @Property({ type: 'string', length: 32, nullable: true })
-    script_reference_id?: string;
+  /** Table to which this filter applies */
+  @Property({ length: 80 })
+  table!: string;
 
-  @Property({ type: 'string', length: 80, nullable: true })
-    script_reference_table?: string;
+  /** Roles allowed (comma-separated, optional) */
+  @Property({ length: 255, nullable: true })
+  roles?: string;
 
-  @Property({ type: 'string', length: 80 })
-    table!: string;
+  /** Schedule filter reference (optional) */
+  @Property({ length: 32, nullable: true })
+  filter_by_schedule?: string;
 
-  @Property({ type: 'string', length: 255, nullable: true })
-    roles?: string;
+  /** Inline script (optional) */
+  @Property({ length: 255, nullable: true })
+  script?: string;
 
-  @Property({ type: 'string', length: 32, nullable: true })
-    filter_by_schedule?: string;
-
-  @Property({ type: 'string', length: 255, nullable: true })
-    script?: string;
-
-  @Property({ type: 'string', length: 80, nullable: true })
-    table_containing_filter?: string;
+  /** Table containing filter (optional) */
+  @Property({ length: 80, nullable: true })
+  table_containing_filter?: string;
 }

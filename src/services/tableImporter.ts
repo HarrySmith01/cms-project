@@ -8,7 +8,7 @@
 import path from 'path';
 import { orm } from '../utils/orm-init';
 import { TableDef, loadTableDefs } from './parsers/tableParser';
-import * as tableSync from './metadataSync/tableSync'; // <<— fixed path
+// import * as tableSync from './metadataSync/tableSync'; // <<— fixed path
 
 /**
  * Recursively ensure parent tables exist, upsert sys_db_object, sync DDL.

@@ -4,6 +4,8 @@ import { importAllTables } from '../../src/services/tableImporter';
 import { importAllColumns } from '../../src/services/columnImporter';
 import * as tableSync from '../../src/services/metadataSync/tableSync';
 
+process.env.DB_TYPE = 'mysql';
+
 beforeAll(async () => {
   await initTestOrm();
 });

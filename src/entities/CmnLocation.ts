@@ -1,127 +1,119 @@
 // File: src/entities/CmnLocation.ts
 // Description: Represents physical or organizational locations within the system.
-// Created: 2025-07-25TXX:XX:XX+05:30
-// Updated: 2025-07-25T21:00:00+05:30
+// Created:     2025-07-26T23:10:00+05:30
+// Updated:     2025-07-26T23:10:00+05:30
 
-import {
-  Entity, PrimaryKey, Property, ManyToOne,
-} from '@mikro-orm/core';
+import { Entity, Property, ManyToOne } from '@mikro-orm/core';
+import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 import { CoreCompany } from './CoreCompany';
 import { SysUser } from './SysUser';
 import { SnHrIntegrationsSource } from './SnHrIntegrationsSource';
 import { SysUserGroup } from './SysUserGroup';
 
-// import { SysPhoneTerritory } from './SysPhoneTerritory';
-// import { LifeCycleStage } from './LifeCycleStage';
-// import { LifeCycleStageStatus } from './LifeCycleStageStatus';
-
+@AclResource('cmn_location')
 @Entity({ tableName: 'cmn_location' })
-export class CmnLocation {
-  @PrimaryKey()
-    sys_id!: string;
-
+export class CmnLocation extends Packaged(BaseEntity) {
+  /** Location name */
   @Property({ length: 100 })
-    name!: string;
+  name!: string;
 
+  /** City name (optional) */
   @Property({ length: 40, nullable: true })
-    city?: string;
+  city?: string;
 
+  /** Associated company */
   @ManyToOne(() => CoreCompany, { nullable: true })
-    company?: CoreCompany;
+  company?: CoreCompany;
 
-  // @ManyToOne(() => Consumer, { nullable: true })
-  // consumer?: Consumer;
-
+  /** Contact person for this location */
   @ManyToOne(() => SysUser, { nullable: true })
-    contact?: SysUser;
+  contact?: SysUser;
 
+  /** Timestamp when coordinates were last retrieved */
   @Property({ type: 'datetime', nullable: true })
-    coordinates_retrieved_on?: Date;
+  coordinates_retrieved_on?: Date;
 
+  /** Correlation identifier (optional) */
   @Property({ length: 100, nullable: true })
-    correlation_id?: string;
+  correlation_id?: string;
 
+  /** Country name (optional) */
   @Property({ length: 40, nullable: true })
-    country?: string;
+  country?: string;
 
+  /** Flag indicating duplicate record */
   @Property({ type: 'boolean', default: false })
-    duplicate: boolean = false;
+  duplicate: boolean = false;
 
+  /** External system ID */
   @Property({ length: 40, nullable: true })
-    sn_tmt_core_external_id?: string;
+  sn_tmt_core_external_id?: string;
 
+  /** Fax phone number (optional) */
   @Property({ length: 40, nullable: true })
-    fax_phone?: string;
+  fax_phone?: string;
 
+  /** Full descriptive name */
   @Property({ length: 255, nullable: true })
-    full_name?: string;
+  full_name?: string;
 
+  /** Error retrieving lat/long */
   @Property({ length: 1000, nullable: true })
-    lat_long_error?: string;
+  lat_long_error?: string;
 
+  /** Latitude coordinate */
   @Property({ type: 'number', nullable: true })
-    latitude?: number;
+  latitude?: number;
 
+  /** Longitude coordinate */
   @Property({ type: 'number', nullable: true })
-    longitude?: number;
+  longitude?: number;
 
-  // @ManyToOne(() => LifeCycleStage, { nullable: true })
-  // life_cycle_stage?: LifeCycleStage;
-
-  // @ManyToOne(() => LifeCycleStageStatus, { nullable: true })
-  // life_cycle_stage_status?: LifeCycleStageStatus;
-
-  @Property({ length: 40, nullable: true })
-    cmn_location_source?: string;
-
-  @Property({ length: 40, nullable: true })
-    cmn_location_type?: string;
-
-  @ManyToOne(() => SysUserGroup, { nullable: true })
-    managed_by_group?: SysUserGroup;
-
-  @ManyToOne(() => CmnLocation, { nullable: true })
-    parent?: CmnLocation;
-
-  @Property({ length: 40, nullable: true })
-    phone?: string;
-
-  // @ManyToOne(() => SysPhoneTerritory, { nullable: true })
-  // phone_territory?: SysPhoneTerritory;
-
-  @Property({ type: 'boolean', default: false })
-    primary: boolean = false;
-
-  @ManyToOne(() => CmnLocation, { nullable: true })
-    primary_location?: CmnLocation;
-
+  /** Source system for this record */
   @ManyToOne(() => SnHrIntegrationsSource, { nullable: true })
-    source?: SnHrIntegrationsSource;
+  source?: SnHrIntegrationsSource;
 
+  /** Location source type */
   @Property({ length: 40, nullable: true })
-    state?: string;
+  cmn_location_source?: string;
 
+  /** Location type */
+  @Property({ length: 40, nullable: true })
+  cmn_location_type?: string;
+
+  /** Managing user group */
+  @ManyToOne(() => SysUserGroup, { nullable: true })
+  managed_by_group?: SysUserGroup;
+
+  /** Parent location for hierarchy */
+  @ManyToOne(() => CmnLocation, { nullable: true })
+  parent?: CmnLocation;
+
+  /** Contact phone number (optional) */
+  @Property({ length: 40, nullable: true })
+  phone?: string;
+
+  /** Primary location flag */
   @Property({ type: 'boolean', default: false })
-    stock_room: boolean = false;
+  primary: boolean = false;
 
+  /** Reference to another primary location */
+  @ManyToOne(() => CmnLocation, { nullable: true })
+  primary_location?: CmnLocation;
+
+  /** State or province (optional) */
+  @Property({ length: 40, nullable: true })
+  state?: string;
+
+  /** Stock room flag */
+  @Property({ type: 'boolean', default: false })
+  stock_room: boolean = false;
+
+  /** Street address (optional) */
   @Property({ length: 255, nullable: true })
-    street?: string;
+  street?: string;
 
+  /** Time zone identifier */
   @Property({ length: 40, nullable: true })
-    time_zone?: string;
-
-  @Property({ type: 'datetime', nullable: true })
-    sys_created_on?: Date;
-
-  @Property({ length: 40, nullable: true })
-    sys_created_by?: string;
-
-  @Property({ type: 'datetime', nullable: true })
-    sys_updated_on?: Date;
-
-  @Property({ length: 40, nullable: true })
-    sys_updated_by?: string;
-
-  @Property({ type: 'number', nullable: true })
-    sys_mod_count?: number;
+  time_zone?: string;
 }

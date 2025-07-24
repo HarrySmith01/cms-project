@@ -1,39 +1,40 @@
 // File: src/entities/SysSchemaError.ts
 // Description: Captures failed DDL operations so ops can review / retry.
-// Created: 2025-07-25T18:10:00+05:30
-// Updated: 2025-07-25T18:10:00+05:30
+// Created:     2025-07-27T04:30:00+05:30
+// Updated:     2025-07-27T04:30:00+05:30
 
-import { Entity, PrimaryKey, Property, ManyToOne } from '@mikro-orm/core';
-import { v4 as uuid } from 'uuid';
+import { Entity, Property, ManyToOne } from '@mikro-orm/core';
+import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 import { SysDictionary } from './SysDictionary';
 
+@AclResource('sys_schema_error')
 @Entity({ tableName: 'sys_schema_error' })
-export class SysSchemaError {
-  @PrimaryKey()
-  id: string = uuid();
-
+export class SysSchemaError extends Packaged(BaseEntity) {
   /** Optional reference to the dictionary row that triggered the failure */
   @ManyToOne(() => SysDictionary, { nullable: true })
   dict!: SysDictionary | null;
 
+  /** The DDL action that failed */
   @Property()
   action!: 'create' | 'update' | 'delete';
 
-  @Property({ nullable: true })
+  /** Table name involved */
+  @Property({ length: 100, nullable: true })
   tableName?: string;
 
-  @Property({ nullable: true })
+  /** Column name involved */
+  @Property({ length: 100, nullable: true })
   columnName?: string;
 
+  /** Full job payload */
   @Property({ type: 'json' })
-  payload!: unknown; // full job payload
+  payload!: unknown;
 
+  /** Error message */
   @Property({ type: 'text' })
   errorMessage!: string;
 
+  /** Stack trace (optional) */
   @Property({ type: 'text', nullable: true })
   stack?: string;
-
-  @Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
-  createdAt: Date = new Date();
 }

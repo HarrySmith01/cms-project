@@ -1,43 +1,31 @@
-// src/entities/SysPerspective.ts
+// File: src/entities/SysPerspective.ts
 // Description: Represents perspective configurations in the system.
-// Created: 2025-07-25TXX:XX:XX+05:30
-// Updated: 2025-07-25TXX:XX:XX+05:30
+// Created:     2025-07-27T03:45:00+05:30
+// Updated:     2025-07-27T03:45:00+05:30
 
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/core';
+import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
+@AclResource('sys_perspective')
 @Entity({ tableName: 'sys_perspective' })
-export class SysPerspective {
-  @PrimaryKey()
-    sys_id!: string;
-
+export class SysPerspective extends Packaged(BaseEntity) {
+  /** Application identifier (optional) */
   @Property({ length: 40, nullable: true })
-    application?: string;
+  application?: string;
 
+  /** Applications list (optional) */
   @Property({ length: 40, nullable: true })
-    applications?: string;
+  applications?: string;
 
+  /** Perspective name (optional) */
   @Property({ length: 40, nullable: true })
-    name?: string;
+  name?: string;
 
+  /** Display order (optional) */
   @Property({ type: 'number', nullable: true })
-    order?: number;
+  order?: number;
 
+  /** Roles allowed (comma-separated, optional) */
   @Property({ length: 40, nullable: true })
-    roles?: string;
-
-  // audit fields
-  @Property({ type: 'datetime', nullable: true })
-    sys_created_on?: Date;
-
-  @Property({ length: 40, nullable: true })
-    sys_created_by?: string;
-
-  @Property({ type: 'datetime', nullable: true })
-    sys_updated_on?: Date;
-
-  @Property({ length: 40, nullable: true })
-    sys_updated_by?: string;
-
-  @Property({ type: 'number', nullable: true })
-    sys_mod_count?: number;
+  roles?: string;
 }

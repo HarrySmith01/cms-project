@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: cms_dev
+      DB_NAME: cms_dev
       MYSQL_USER: root
       MYSQL_PASSWORD: root
     ports:

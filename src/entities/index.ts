@@ -1,5 +1,50 @@
 // src/entities/index.ts
-// Description: Entities entry point
-// Created: July 22, 2025, 10:00 AM IST
-// Updated: July 22, 2025, 11:00 AM IST
-export {};
+
+export * from './BaseEntity';
+export { default as Packaged } from './BaseEntity';
+export { default as AclResource } from './BaseEntity';
+
+export * from './BatchInstallPlan';
+export * from './BusinessCalendar';
+export * from './CmnBuilding';
+export * from './CmnCostCenter';
+export * from './CmnDepartment';
+export * from './CmnLocation';
+export * from './CmnSchedule';
+export * from './CoreCompany';
+export * from './GswContent';
+export * from './LdapServerConfig';
+export * from './RateType';
+export * from './RollbackContext';
+export * from './SnHrIntegrationsSource';
+export * from './Subscription';
+export * from './SubscriptionEntitlement';
+export * from './SysChoice';
+export * from './SysDbObject';
+export * from './SysDictionary';
+export * from './SysFilterOptionDynamic';
+export * from './SysGlideObject';
+export * from './SysGroupHasRole';
+export * from './SysMetadata';
+export * from './SysPackage';
+export * from './SysPackageDependencyItem';
+export * from './SysPackageDependencyM2M';
+export * from './SysPerspective';
+export * from './SysPlugin';
+export * from './SysProperty';
+export * from './SysRemoteUpdateSet';
+export * from './SysSchemaError';
+export * from './SysScope';
+export * from './SysSecurityAcl';
+export * from './SysSecurityAclRole';
+export * from './SysSecurityAttribute';
+export * from './SysSecurityOperation';
+export * from './SysUpdateSet';
+export * from './SysUpdateSetSource';
+export * from './SysUser';
+export * from './SysUserGrmember';
+export * from './SysUserGroup';
+export * from './SysUserHasRole';
+export * from './SysUserRole';
+export * from './TimeSheetPolicy';
+export * from './VPlugin';

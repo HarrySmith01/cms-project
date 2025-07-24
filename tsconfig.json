@@ -24,7 +24,7 @@
   "exclude": [
     "node_modules",
     "src/wueues",
-    "src/runtime",
+    "src/utils/runtime",
     "src/subscribers",
     "tests",
     "scripts"

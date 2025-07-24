@@ -1,54 +1,39 @@
-// src/entities/SysChoice.ts
-// Description: Entity for sys_choice table.
-// Created: 2025-07-25TXX:XX:XX+05:30
-// Updated: 2025-07-25TXX:XX:XX+05:30
+// File: src/entities/SysChoice.ts
+// Description: Entity for sys_choice table, storing choice list entries.
+// Created:     2025-07-27T01:30:00+05:30
+// Updated:     2025-07-27T01:30:00+05:30
 
-import {
-  Entity, PrimaryKey, Property, Index,
-} from '@mikro-orm/core';
+import { Entity, Property, ManyToMany, Index } from '@mikro-orm/core';
+import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @Entity({ tableName: 'sys_choice' })
 @Index({
   properties: ['element', 'name', 'language'],
   options: { unique: true },
 })
-export class SysChoice {
-  @PrimaryKey({ type: 'uuid' })
-    sys_id!: string;
-
+@AclResource('sys_choice')
+export class SysChoice extends Packaged(BaseEntity) {
+  /** Field name this choice applies to */
   @Property({ length: 100 })
-    element!: string;
+  element!: string;
 
+  /** Choice list name */
   @Property({ length: 100 })
-    name!: string;
+  name!: string;
 
+  /** Display label for this choice */
   @Property({ length: 100 })
-    label!: string;
+  label!: string;
 
+  /** Stored value */
   @Property({ length: 40 })
-    value!: string;
+  value!: string;
 
-  @Property({ type: 'number', default: 0 })
-    sequence: number = 0;
+  /** Sort order */
+  @Property({ default: 0 })
+  sequence: number = 0;
 
+  /** Language code */
   @Property({ length: 40 })
-    language!: string;
-
-  @Property({ type: 'boolean', default: true })
-    active: boolean = true;
-
-  @Property({ type: 'date', onCreate: () => new Date() })
-    sys_created_on: Date = new Date();
-
-  @Property({ length: 40, nullable: true })
-    sys_created_by?: string;
-
-  @Property({ type: 'date', onUpdate: () => new Date() })
-    sys_updated_on: Date = new Date();
-
-  @Property({ length: 40, nullable: true })
-    sys_updated_by?: string;
-
-  @Property({ type: 'number', default: 0 })
-    sys_mod_count: number = 0;
+  language!: string;
 }

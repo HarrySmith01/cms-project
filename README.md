@@ -62,6 +62,11 @@ npm run migration:up:dev
 npm run migration:up:test
 npm run migration:up:prod
 
+# Seeding
+$env:DB_TYPE = 'mysql'      # ensure MikroORM uses the MySQL driver
+
+npx mikro-orm seeder:run -c InitialSeeder
+
 
 # Testing
 
@@ -146,3 +151,7 @@ pm2 restart ecosystem.config.js # reload both
 
 pm2 restart ecosystem.config.js
 pm2 ls # dict-worker and table-worker should show “online”
+
+# Genreate Project Structure
+
+node tests\generate-structure.js

@@ -1,12 +1,81 @@
 # Project Structure
+
 - config/
   - redis.config.ts
+- definitions/
+  - columns/
+  - tables/
 - dist/
+  - cli/
+    - schema-import.js
+  - entities/
+    - BatchInstallPlan.js
+    - BusinessCalendar.js
+    - CmnBuilding.js
+    - CmnCostCenter.js
+    - CmnDepartment.js
+    - CmnLocation.js
+    - CmnSchedule.js
+    - CoreCompany.js
+    - GswContent.js
+    - index.js
+    - LdapServerConfig.js
+    - RateType.js
+    - RollbackContext.js
+    - SnHrIntegrationsSource.js
+    - Subscription.js
+    - SubscriptionEntitlement.js
+    - SysChoice.js
+    - SysDbObject.js
+    - SysDictionary.js
+    - SysFilterOptionDynamic.js
+    - SysGlideObject.js
+    - SysGroupHasRole.js
+    - SysMetadata.js
+    - SysPackage.js
+    - SysPackageDependencyItem.js
+    - SysPackageDependencyM2M.js
+    - SysPerspective.js
+    - SysPlugin.js
+    - SysProperty.js
+    - SysRemoteUpdateSet.js
+    - SysSchemaError.js
+    - SysScope.js
+    - SysSecurityAcl.js
+    - SysSecurityAclRole.js
+    - SysSecurityAttribute.js
+    - SysSecurityOperation.js
+    - SysUpdateSet.js
+    - SysUpdateSetSource.js
+    - SysUser.js
+    - SysUserGrmember.js
+    - SysUserGroup.js
+    - SysUserHasRole.js
+    - SysUserRole.js
+    - TimeSheetPolicy.js
+    - VPlugin.js
   - mikro-orm.config.js
+  - queues/
+    - dictionaryQueue.js
+    - tableQueue.js
+  - runtime/
+    - DynamicRecord.js
+    - GlideRecord.js
+    - metadataCache.js
   - scripts/
     - debug-by-entity.js
     - debug-entities.js
     - debug-entity-load.js
+  - services/
+    - columnImporter.js
+    - metadataSync/
+      - columnSync.js
+      - logSchemaError.js
+      - tableSync.js
+    - parsers/
+      - columnParser.js
+      - tableParser.js
+    - tableImporter.js
   - src/
     - entities/
       - BatchInstallPlan.js
@@ -40,6 +109,7 @@
       - SysPlugin.js
       - SysProperty.js
       - SysRemoteUpdateSet.js
+      - SysSchemaError.js
       - SysScope.js
       - SysSecurityAcl.js
       - SysSecurityAclRole.js
@@ -59,15 +129,21 @@
     - runtime/
       - DynamicRecord.js
       - GlideRecord.js
-      - MetadataCache.js
+      - metadataCache.js
     - subscribers/
       - DictionarySubscriber.js
     - utils/
       - queue.js
+  - subscribers/
+    - DictionarySubscriber.js
+    - TableSubscriber.js
   - tests/
     - ci-trigger.test.js
     - mikro-config-test.js
     - mikro-config.test.js
+  - utils/
+    - orm-init.js
+    - typeMapper.js
 - docker-compose.yml
 - docs/
   - ci-test.md
@@ -80,10 +156,57 @@
   - story3.md
   - story4.md
   - version-log.md
+- ecosystem.config.js
 - eslint.config.cjs
 - jest.config.cjs
+- logs/
+  - console-2025-07-24T09-40-50-057Z.log
+  - console-2025-07-24T09-40-50-066Z.log
+  - console-2025-07-24T09-40-50-069Z.log
+  - console-2025-07-24T09-40-50-070Z.log
+  - console-2025-07-24T09-40-50-071Z.log
+  - console-2025-07-24T09-40-50-074Z.log
+  - console-2025-07-24T09-40-50-077Z.log
+  - console-2025-07-24T09-42-36-699Z.log
+  - console-2025-07-24T09-42-36-712Z.log
+  - console-2025-07-24T09-42-49-343Z.log
+  - console-2025-07-24T09-42-49-350Z.log
+  - console-2025-07-24T09-42-49-353Z.log
+  - console-2025-07-24T09-42-49-356Z.log
+  - console-2025-07-24T09-42-49-358Z.log
+  - console-2025-07-24T09-42-49-364Z.log
+  - console-2025-07-24T09-42-49-376Z.log
+  - console-2025-07-24T09-50-19-179Z.log
+  - console-2025-07-24T09-50-19-183Z.log
+  - console-2025-07-24T09-50-19-185Z.log
+  - console-2025-07-24T09-50-19-187Z.log
+  - console-2025-07-24T09-50-19-189Z.log
+  - console-2025-07-24T09-50-19-190Z.log
+  - console-2025-07-24T09-50-19-192Z.log
+  - console-2025-07-24T09-50-19-195Z.log
+  - console-2025-07-24T12-32-07-932Z.log
+  - console-2025-07-24T12-32-07-933Z.log
+  - console-2025-07-24T12-32-07-934Z.log
+  - console-2025-07-24T12-37-25-730Z.log
+  - console-2025-07-24T12-37-25-745Z.log
+  - console-2025-07-24T12-37-25-752Z.log
+  - console-2025-07-24T12-37-25-753Z.log
+  - console-2025-07-24T12-37-25-754Z.log
+  - console-2025-07-24T12-37-25-758Z.log
+  - console-2025-07-24T12-37-25-760Z.log
+  - console-2025-07-24T12-37-25-763Z.log
+  - console-2025-07-24T12-37-25-766Z.log
+  - test-log-2025-07-24T09-36-20-224Z.log
+  - test-log-2025-07-24T09-40-49-336Z.log
+  - test-log-2025-07-24T09-42-35-953Z.log
+  - test-log-2025-07-24T09-42-48-555Z.log
+  - test-log-2025-07-24T09-50-18-497Z.log
+  - test-log-2025-07-24T12-32-07-175Z.log
+  - test-log-2025-07-24T12-37-25-049Z.log
 - migrations/
-  - Migration20250723121642.ts
+  - Migration20250724061304.ts
+- mikro-orm.config - Bakcup.ts
+- mikro-orm.config.js
 - mikro-orm.config.ts
 - package-lock.json
 - package.json
@@ -94,7 +217,10 @@
   - debug-entities.ts
   - debug-entity-load.ts
 - src/
+  - cli/
+    - schema-import.ts
   - entities/
+    - BaseEntity.ts
     - BatchInstallPlan.ts
     - BusinessCalendar.ts
     - CmnBuilding.ts
@@ -125,6 +251,7 @@
     - SysPlugin.ts
     - SysProperty.ts
     - SysRemoteUpdateSet.ts
+    - SysSchemaError.ts
     - SysScope.ts
     - SysSecurityAcl.ts
     - SysSecurityAclRole.ts
@@ -139,31 +266,58 @@
     - SysUserRole.ts
     - TimeSheetPolicy.ts
     - VPlugin.ts
-  - jobs/
-    - extensionEngine.ts
-  - plugins/
-  - routes/
+  - queues/
+    - dictionaryQueue.ts
+    - tableQueue.ts
   - runtime/
     - DynamicRecord.ts
     - GlideRecord.ts
-    - MetadataCache.ts
+    - metadataCache.ts
   - seeders/
+    - InitialSeeder.ts
   - services/
+    - columnImporter.ts
+    - metadataSync/
+      - aclSync.ts
+      - columnSync.ts
+      - logSchemaError.ts
+      - tableSync.ts
+    - parsers/
+      - columnParser.ts
+      - info.txt
+      - tableParser.ts
+    - tableImporter.ts
   - subscribers/
     - DictionarySubscriber.ts
-  - themes/
+    - TableSubscriber.ts
   - utils/
-    - queue.ts
+    - db-compat.ts
+    - orm-init.ts
+    - typeMapper.ts
 - tests/
   - ci-trigger.test.ts
   - code-quality.test.js
+  - db-compat.test.ts
   - db-connect-test.js
   - db-setup.test.ts
   - generate-structure.js
+  - integration/
+    - importers.test.ts
+  - jest-set-dbtype.js
+  - jest-setup-console.js
+  - logger-reporter.js
+  - metadataSync/
+    - aclSync.test.ts
   - migrations/
     - initial.test.ts
+    - metadataSync/
+      - columnSync.test.ts
   - mikro-config-test.ts
   - mikro-config.test.ts
+  - utils/
+    - typeMapper.test.ts
+  - \_utils/
+    - ormTestHarness.ts
 - tools/
   - check-risks.js
 - tsconfig.json

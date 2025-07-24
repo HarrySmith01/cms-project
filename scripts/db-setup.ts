@@ -18,9 +18,9 @@ async function main() {
     if (env === 'production') {
       mysqlDbs.push(process.env.DB_NAME!);
     } else if (env === 'test') {
-      mysqlDbs.push(process.env.TEST_DB_NAME!);
+      mysqlDbs.push(process.env.DB_NAME!);
     } else {
-      mysqlDbs.push(process.env.DB_NAME!, process.env.TEST_DB_NAME!);
+      mysqlDbs.push(process.env.DB_NAME!, process.env.DB_NAME!);
     }
 
     const conn = await mysql.createConnection({

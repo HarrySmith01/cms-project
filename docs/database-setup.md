@@ -107,7 +107,6 @@ sudo systemctl enable mongod
    DB_USER=root
    DB_PASSWORD=       # leave blank if no password
    DB_NAME=cms_dev
-   TEST_DB_NAME=cms_test
 
    MONGO_URL=mongodb://localhost:27017/cms
    REDIS_URL=redis://localhost:6379

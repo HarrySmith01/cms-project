@@ -16,7 +16,7 @@ jobs:
         image: mysql:8.4
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: cms_dev
+          DB_NAME: cms_dev
         ports:
           - 3306:3306
 

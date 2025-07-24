@@ -1,71 +1,63 @@
-// src/entities/CmnDepartment.ts
+// File: src/entities/CmnDepartment.ts
 // Description: Represents departments within a company for org structure & HR references.
-// Created:   2025-07-25TXX:XX:XX+05:30
-// Updated:   2025-07-25TXX:XX:XX+05:30
+// Created:     2025-07-26T22:55:00+05:30
+// Updated:     2025-07-26T22:55:00+05:30
 
-import {
-  Entity, PrimaryKey, Property, ManyToOne,
-} from '@mikro-orm/core';
+import { Entity, Property, ManyToOne } from '@mikro-orm/core';
+import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 import { CoreCompany } from './CoreCompany';
 import { CmnCostCenter } from './CmnCostCenter';
 import { SysUser } from './SysUser';
 import { SnHrIntegrationsSource } from './SnHrIntegrationsSource';
 
+@AclResource('cmn_department')
 @Entity({ tableName: 'cmn_department' })
-export class CmnDepartment {
-  @PrimaryKey()
-    sys_id!: string;
-
+export class CmnDepartment extends Packaged(BaseEntity) {
+  /** Department name */
   @Property({ length: 100 })
-    name!: string;
+  name!: string;
 
+  /** External ID (optional) */
   @Property({ length: 40, nullable: true })
-    id?: string;
+  id?: string;
 
+  /** Department code (optional) */
   @Property({ length: 40, nullable: true })
-    code?: string;
+  code?: string;
 
+  /** Detailed description */
   @Property({ length: 1000, nullable: true })
-    description?: string;
+  description?: string;
 
+  /** Correlation identifier (optional) */
   @Property({ length: 100, nullable: true })
-    correlation_id?: string;
+  correlation_id?: string;
 
-  // let Mikro infer an INTEGER
+  /** Head count */
   @Property({ type: 'integer', nullable: true })
-    head_count?: number;
+  head_count?: number;
 
+  /** Associated company */
   @ManyToOne(() => CoreCompany, { nullable: true })
-    company?: CoreCompany;
+  company?: CoreCompany;
 
+  /** Cost center reference */
   @ManyToOne(() => CmnCostCenter, { nullable: true })
-    cost_center?: CmnCostCenter;
+  cost_center?: CmnCostCenter;
 
+  /** Department head */
   @ManyToOne(() => SysUser, { nullable: true })
-    dept_head?: SysUser;
+  dept_head?: SysUser;
 
+  /** Primary contact user */
   @ManyToOne(() => SysUser, { nullable: true })
-    primary_contact?: SysUser;
+  primary_contact?: SysUser;
 
+  /** Parent department */
   @ManyToOne(() => CmnDepartment, { nullable: true })
-    parent?: CmnDepartment;
+  parent?: CmnDepartment;
 
+  /** HR integration source */
   @ManyToOne(() => SnHrIntegrationsSource, { nullable: true })
-    source?: SnHrIntegrationsSource;
-
-  @Property({ type: 'datetime', nullable: true })
-    sys_created_on?: Date;
-
-  @Property({ length: 40, nullable: true })
-    sys_created_by?: string;
-
-  @Property({ type: 'datetime', nullable: true })
-    sys_updated_on?: Date;
-
-  @Property({ length: 40, nullable: true })
-    sys_updated_by?: string;
-
-  // also an INTEGER
-  @Property({ type: 'integer', nullable: true })
-    sys_mod_count?: number;
+  source?: SnHrIntegrationsSource;
 }
