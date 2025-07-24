@@ -9,7 +9,7 @@ import { SysDictionary } from './SysDictionary';
 
 @AclResource('sys_schema_error')
 @Entity({ tableName: 'sys_schema_error' })
-export class SysSchemaError extends Packaged(BaseEntity) {
+export class SysSchemaError extends Packaged(BaseEntity as any) {
   /** Optional reference to the dictionary row that triggered the failure */
   @ManyToOne(() => SysDictionary, { nullable: true })
   dict!: SysDictionary | null;

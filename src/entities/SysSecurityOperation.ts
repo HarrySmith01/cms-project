@@ -8,7 +8,7 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('sys_security_operation')
 @Entity({ tableName: 'sys_security_operation' })
-export class SysSecurityOperation extends Packaged(BaseEntity) {
+export class SysSecurityOperation extends Packaged(BaseEntity as any) {
   /** Operation name (e.g., create, read, update, delete) */
   @Property({ length: 40 })
   name!: string;

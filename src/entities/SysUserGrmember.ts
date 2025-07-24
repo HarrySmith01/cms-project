@@ -10,7 +10,7 @@ import { SysUserGroup } from './SysUserGroup';
 
 @AclResource('sys_user_grmember')
 @Entity({ tableName: 'sys_user_grmember' })
-export class SysUserGrmember extends Packaged(BaseEntity) {
+export class SysUserGrmember extends Packaged(BaseEntity as any) {
   /** User reference */
   @ManyToOne(() => SysUser)
   user!: SysUser;

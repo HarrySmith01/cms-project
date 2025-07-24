@@ -8,7 +8,7 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('sys_perspective')
 @Entity({ tableName: 'sys_perspective' })
-export class SysPerspective extends Packaged(BaseEntity) {
+export class SysPerspective extends Packaged(BaseEntity as any) {
   /** Application identifier (optional) */
   @Property({ length: 40, nullable: true })
   application?: string;

@@ -10,7 +10,7 @@ import { SysUserRole } from './SysUserRole';
 
 @AclResource('sys_group_has_role')
 @Entity({ tableName: 'sys_group_has_role' })
-export class SysGroupHasRole extends Packaged(BaseEntity) {
+export class SysGroupHasRole extends Packaged(BaseEntity as any) {
   /** Group receiving the role */
   @ManyToOne(() => SysUserGroup)
   group!: SysUserGroup;

@@ -8,6 +8,6 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('sys_subscription_entitlement')
 @Entity({ tableName: 'sys_subscription_entitlement' })
-export class SubscriptionEntitlement extends Packaged(BaseEntity) {
+export class SubscriptionEntitlement extends Packaged(BaseEntity as any) {
   // TODO: add real entitlement fields (e.g., feature_code, subscriptions)
 }

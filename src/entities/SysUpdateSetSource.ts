@@ -8,7 +8,7 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('sys_update_set_source')
 @Entity({ tableName: 'sys_update_set_source' })
-export class SysUpdateSetSource extends Packaged(BaseEntity) {
+export class SysUpdateSetSource extends Packaged(BaseEntity as any) {
   /** Whether this source is active */
   @Property({ default: true })
   active: boolean = true;

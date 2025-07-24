@@ -1,18 +1,24 @@
 // File: src/services/auth.service.ts
 /**
- * Description: Sets up Passport.js strategies for Local (Basic) and OAuth2 authentication,
- *              integrating with the dynamic-table CRUD layer (tableCrud) and metadata cache.
+ * Description: Extends authentication service with JWT-based session management:
+ *              generateTokens and refreshAccessToken using tableCrud and metadataCache,
+ *              with separate error handling for invalid tokens vs. missing users.
  * Created: July 25, 2025 00:10 IST
- * Updated: July 25, 2025 06:30 IST
+ * Updated: July 27, 2025 14:45 IST
  */
 
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as OAuth2Strategy } from 'passport-oauth2';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { EntityManager } from '@mikro-orm/core';
 import { tableCrud } from '../utils/tableCrud';
 import { metadataCache } from '../utils/metadataCache';
+
+const ACCESS_TOKEN_EXPIRY = '15m';
+const REFRESH_TOKEN_EXPIRY = '1d';
+const JWT_SECRET = process.env.JWT_SECRET!;
 
 export function setupPassport(em: EntityManager) {
   // Local (Basic) authentication
@@ -74,12 +80,10 @@ export function setupPassport(em: EntityManager) {
     )
   );
 
-  // Session serialization
   passport.serializeUser((user: any, done) => {
     done(null, user.sys_id);
   });
 
-  // Session deserialization
   passport.deserializeUser(async (id: string, done) => {
     try {
       await metadataCache.ensureCache(em);
@@ -89,4 +93,45 @@ export function setupPassport(em: EntityManager) {
       return done(err as Error);
     }
   });
+}
+
+/**
+ * Generate access and refresh JWT tokens for the given user.
+ */
+export function generateTokens(user: any) {
+  const payload = { sub: user.sys_id };
+  const accessToken = jwt.sign(payload, JWT_SECRET, {
+    expiresIn: ACCESS_TOKEN_EXPIRY,
+  });
+  const refreshToken = jwt.sign(payload, JWT_SECRET, {
+    expiresIn: REFRESH_TOKEN_EXPIRY,
+  });
+  return { accessToken, refreshToken };
+}
+
+/**
+ * Refresh the access token using a valid refresh token.
+ * Separates JWT verification errors from missing-user errors.
+ */
+export async function refreshAccessToken(em: EntityManager, token: string) {
+  // 1) Verify refresh token
+  let decoded: { sub: string };
+  try {
+    decoded = jwt.verify(token, JWT_SECRET) as { sub: string };
+  } catch {
+    throw new Error('Invalid or expired refresh token');
+  }
+
+  // 2) Ensure metadata is loaded
+  await metadataCache.ensureCache(em);
+
+  // 3) Fetch the user
+  const users = await tableCrud.read(em, 'SysUser', { sys_id: decoded.sub });
+  const user = users[0];
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  // 4) Generate and return new tokens
+  return generateTokens(user);
 }

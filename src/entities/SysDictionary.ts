@@ -17,7 +17,9 @@ import { SysGlideObject } from './SysGlideObject';
 
 @AclResource('sys_dictionary')
 @Entity({ tableName: 'sys_dictionary' })
-export class SysDictionary extends DictionaryEntity(Packaged(BaseEntity)) {
+export class SysDictionary extends DictionaryEntity(
+  Packaged(BaseEntity as any)
+) {
   /** Active flag (inherited from BaseEntity) */
   /** Denormalized array flag */
   @Property({ default: false })

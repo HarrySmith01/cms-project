@@ -8,7 +8,7 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('sys_security_attribute')
 @Entity({ tableName: 'sys_security_attribute' })
-export class SysSecurityAttribute extends Packaged(BaseEntity) {
+export class SysSecurityAttribute extends Packaged(BaseEntity as any) {
   /** Unique attribute name */
   @Property({ length: 80, unique: true })
   name!: string;

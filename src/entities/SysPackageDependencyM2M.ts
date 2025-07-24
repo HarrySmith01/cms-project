@@ -9,7 +9,7 @@ import { SysPackage } from './SysPackage';
 
 @AclResource('sys_package_dependency_m2m')
 @Entity({ tableName: 'sys_package_dependency_m2m' })
-export class SysPackageDependencyM2M extends Packaged(BaseEntity) {
+export class SysPackageDependencyM2M extends Packaged(BaseEntity as any) {
   /** Parent package */
   @ManyToOne(() => SysPackage)
   sys_package!: SysPackage;

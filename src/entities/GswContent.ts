@@ -16,7 +16,7 @@ import { SysPlugin } from './SysPlugin';
 
 @AclResource('gsw_content')
 @Entity({ tableName: 'gsw_content' })
-export class GswContent extends Packaged(BaseEntity) {
+export class GswContent extends Packaged(BaseEntity as any) {
   /** Whether this content is active (inherited from BaseEntity) */
 
   /** Contents this depends on (self-referential list) */

@@ -16,7 +16,7 @@ import { GswContent } from './GswContent';
 
 @AclResource('sys_plugins')
 @Entity({ tableName: 'sys_plugins' })
-export class SysPlugin extends Packaged(BaseEntity) {
+export class SysPlugin extends Packaged(BaseEntity as any) {
   /** Reference to Batch Installation Plan */
   @ManyToOne(() => BatchInstallPlan, { nullable: true })
   batch_install_plan?: BatchInstallPlan;

@@ -16,7 +16,7 @@ import { GswContent } from './GswContent';
 
 @AclResource('v_plugin')
 @Entity({ tableName: 'v_plugin' })
-export class VPlugin extends Packaged(BaseEntity) {
+export class VPlugin extends Packaged(BaseEntity as any) {
   /** External plugin ID */
   @Property()
   id!: string;

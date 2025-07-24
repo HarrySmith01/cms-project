@@ -8,6 +8,6 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('sys_subscription')
 @Entity({ tableName: 'sys_subscription' })
-export class Subscription extends Packaged(BaseEntity) {
+export class Subscription extends Packaged(BaseEntity as any) {
   // TODO: add real subscription fields (e.g., plan_id, user_count, expires_on)
 }

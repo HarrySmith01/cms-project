@@ -8,7 +8,7 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('ldap_server_config')
 @Entity({ tableName: 'ldap_server_config' })
-export class LdapServerConfig extends Packaged(BaseEntity) {
+export class LdapServerConfig extends Packaged(BaseEntity as any) {
   /** Display name for this LDAP config */
   @Property({ length: 40 })
   name!: string;

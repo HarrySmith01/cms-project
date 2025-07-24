@@ -11,7 +11,7 @@ import { Subscription } from './Subscription';
 
 @AclResource('sys_scope')
 @Entity({ tableName: 'sys_scope' })
-export class SysScope extends Packaged(BaseEntity) {
+export class SysScope extends Packaged(BaseEntity as any) {
   /** Flags whether scoped admin features are enabled */
   @Property({ default: false })
   scoped_administration: boolean = false;

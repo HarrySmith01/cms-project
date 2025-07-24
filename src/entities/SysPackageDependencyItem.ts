@@ -9,7 +9,7 @@ import { SysPackageDependencyM2M } from './SysPackageDependencyM2M';
 
 @AclResource('sys_package_dependency_item')
 @Entity({ tableName: 'sys_package_dependency_item' })
-export class SysPackageDependencyItem extends Packaged(BaseEntity) {
+export class SysPackageDependencyItem extends Packaged(BaseEntity as any) {
   /** Reference to the parent package dependency M2M record */
   @ManyToOne(() => SysPackageDependencyM2M)
   package_dependency!: SysPackageDependencyM2M;

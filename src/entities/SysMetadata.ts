@@ -10,7 +10,7 @@ import { SysPackage } from './SysPackage';
 
 @AclResource('sys_metadata')
 @Entity({ tableName: 'sys_metadata' })
-export class SysMetadata extends Packaged(BaseEntity) {
+export class SysMetadata extends Packaged(BaseEntity as any) {
   /** Reference to application scope */
   @ManyToOne(() => SysScope, { nullable: false })
   @Index()

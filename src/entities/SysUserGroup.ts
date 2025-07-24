@@ -18,7 +18,7 @@ import { SysGroupHasRole } from './SysGroupHasRole';
 
 @AclResource('sys_user_group')
 @Entity({ tableName: 'sys_user_group' })
-export class SysUserGroup extends Packaged(BaseEntity) {
+export class SysUserGroup extends Packaged(BaseEntity as any) {
   /** Group name */
   @Property({ length: 80 })
   name!: string;

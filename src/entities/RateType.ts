@@ -8,7 +8,7 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('rate_type')
 @Entity({ tableName: 'rate_type' })
-export class RateType extends Packaged(BaseEntity) {
+export class RateType extends Packaged(BaseEntity as any) {
   /** Active flag (inherited from BaseEntity) */
 
   /** Description of the rate type */

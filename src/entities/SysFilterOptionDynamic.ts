@@ -8,7 +8,7 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('sys_filter_option_dynamic')
 @Entity({ tableName: 'sys_filter_option_dynamic' })
-export class SysFilterOptionDynamic extends Packaged(BaseEntity) {
+export class SysFilterOptionDynamic extends Packaged(BaseEntity as any) {
   /** Available flag */
   @Property({ default: false })
   available_for_default!: boolean;

@@ -8,7 +8,7 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('cmn_schedule')
 @Entity({ tableName: 'cmn_schedule' })
-export class CmnSchedule extends Packaged(BaseEntity) {
+export class CmnSchedule extends Packaged(BaseEntity as any) {
   /** Document reference (optional) */
   @Property({ length: 40, nullable: true })
   document?: string;

@@ -8,7 +8,7 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('sys_user_role')
 @Entity({ tableName: 'sys_user_role' })
-export class SysUserRole extends Packaged(BaseEntity) {
+export class SysUserRole extends Packaged(BaseEntity as any) {
   /** Role name (unique) */
   @Property({ length: 100, unique: true })
   name!: string;

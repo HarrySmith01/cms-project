@@ -12,7 +12,7 @@ import { SysUserGroup } from './SysUserGroup';
 
 @AclResource('cmn_location')
 @Entity({ tableName: 'cmn_location' })
-export class CmnLocation extends Packaged(BaseEntity) {
+export class CmnLocation extends Packaged(BaseEntity as any) {
   /** Location name */
   @Property({ length: 100 })
   name!: string;

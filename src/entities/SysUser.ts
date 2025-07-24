@@ -27,7 +27,7 @@ import { SysUserGroup } from './SysUserGroup';
 
 @AclResource('sys_user')
 @Entity({ tableName: 'sys_user' })
-export class SysUser extends Packaged(BaseEntity) {
+export class SysUser extends Packaged(BaseEntity as any) {
   @Property({ length: 80, unique: true })
   user_name!: string;
 

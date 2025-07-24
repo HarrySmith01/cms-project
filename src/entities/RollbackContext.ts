@@ -8,6 +8,6 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('sys_rollback_context')
 @Entity({ tableName: 'sys_rollback_context' })
-export class RollbackContext extends Packaged(BaseEntity) {
+export class RollbackContext extends Packaged(BaseEntity as any) {
   // TODO: add real fields as needed
 }

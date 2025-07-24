@@ -8,7 +8,7 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('sn_hr_integrations_source')
 @Entity({ tableName: 'sn_hr_integrations_source' })
-export class SnHrIntegrationsSource extends Packaged(BaseEntity) {
+export class SnHrIntegrationsSource extends Packaged(BaseEntity as any) {
   /** Display name for this integration source */
   @Property({ length: 100 })
   name!: string;

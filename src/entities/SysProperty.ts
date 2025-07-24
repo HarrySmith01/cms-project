@@ -9,7 +9,7 @@ import { SysUser } from './SysUser';
 
 @AclResource('sys_properties')
 @Entity({ tableName: 'sys_properties' })
-export class SysProperty extends Packaged(BaseEntity) {
+export class SysProperty extends Packaged(BaseEntity as any) {
   /** Property name (unique) */
   @Property({ length: 100, unique: true })
   name!: string;

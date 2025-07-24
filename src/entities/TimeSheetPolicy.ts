@@ -10,7 +10,7 @@ import { SysUserGroup } from './SysUserGroup';
 
 @AclResource('time_sheet_policy')
 @Entity({ tableName: 'time_sheet_policy' })
-export class TimeSheetPolicy extends Packaged(BaseEntity) {
+export class TimeSheetPolicy extends Packaged(BaseEntity as any) {
   @Property({ default: false })
   allow_blank_time_cards: boolean = false;
 

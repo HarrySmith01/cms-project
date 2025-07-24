@@ -4,7 +4,7 @@
  *              sets up middleware (parsing, security, sessions), configures Passport,
  *              mounts routes, and starts the server.
  * Created: July 25, 2025 00:20 IST
- * Updated: July 25, 2025 04:20 IST
+ * Updated: July 25, 2025 11:30 IST
  */
 
 import 'dotenv/config';
@@ -15,7 +15,6 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import { MikroORM, EntityManager } from '@mikro-orm/core';
-import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import ormConfig from '../mikro-orm.config';
 import { setupPassport } from './services/auth.service';
 import authRouter from './routes/auth';
@@ -25,15 +24,6 @@ async function createApp() {
   // 1. Initialize ORM
   const orm = await MikroORM.init(ormConfig);
   const em: EntityManager = orm.em.fork();
-  // Optional: SQL query logging in development
-  if (process.env.NODE_ENV === 'development') {
-    orm
-      .getConnection()
-      .getDriver()
-      .getConnection()
-      // eslint-disable-next-line no-console
-      .on('query', (sql) => console.log(new SqlHighlighter().format(sql)));
-  }
 
   // 2. Create Express app
   const app = express();

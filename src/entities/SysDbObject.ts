@@ -1,17 +1,19 @@
 // File: src/entities/SysDbObject.ts
 // Description: Defines the sys_db_object table, storing table-level permissions and behavior.
 // Created:     2025-07-26T01:35:00+05:30
-// Updated:     2025-07-26T01:35:00+05:30
-
+// Updated:     2025-07-26T12:00 IST
 import { Entity, Property, ManyToOne, Index } from '@mikro-orm/core';
 import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 import { SysGlideObject } from './SysGlideObject';
 import { BatchInstallPlan } from './BatchInstallPlan';
 import { SysUserRole } from './SysUserRole';
 
+// Workaround: cast BaseEntity to 'any' so Packaged can accept it despite abstract.
+const SysDbObjectBase = Packaged(BaseEntity as any);
+
 @AclResource('sys_db_object')
 @Entity({ tableName: 'sys_db_object' })
-export class SysDbObject extends Packaged(BaseEntity) {
+export class SysDbObject extends SysDbObjectBase {
   /** Collection flag (always false here) */
   @Property({ default: false })
   collection: boolean = false;

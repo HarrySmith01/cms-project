@@ -18,7 +18,7 @@ import { SysSecurityAclRole } from './SysSecurityAclRole';
 
 @AclResource('sys_security_acl')
 @Entity({ tableName: 'sys_security_acl' })
-export class SysSecurityAcl extends Packaged(BaseEntity) {
+export class SysSecurityAcl extends Packaged(BaseEntity as any) {
   /** Composite name (table.field.operation) */
   @Property({ length: 255 })
   name!: string;

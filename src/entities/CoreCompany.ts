@@ -10,7 +10,7 @@ import { SysChoice } from './SysChoice';
 
 @AclResource('core_company')
 @Entity({ tableName: 'core_company' })
-export class CoreCompany extends Packaged(BaseEntity) {
+export class CoreCompany extends Packaged(BaseEntity as any) {
   @Property({ length: 255, nullable: true })
   apple_icon?: string;
 

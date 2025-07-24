@@ -1,12 +1,11 @@
 // File: src/entities/BaseEntity.ts
-// Description: Comprehensive mapped superclass for all static entities.
+// Description: Comprehensive abstract base class for all static entities.
 //              Includes PK, audit fields, ACL metadata, package/scope mixin,
 //              and optional DictionaryEntity mixin for dictionary tables.
 // Created:     2025-07-26T11:30:00+05:30
-// Updated:     2025-07-26T11:30:00+05:30
+// Updated:     2025-07-26T12:30 IST
 
 import {
-  MappedSuperclass,
   PrimaryKey,
   Property,
   BeforeCreate,
@@ -42,7 +41,6 @@ export function AclResource(name: string) {
  *  - active/protected flags
  *  - built-in validation (.validate())
  */
-@MappedSuperclass()
 export abstract class BaseEntity {
   @PrimaryKey({ type: 'uuid' })
   @IsUUID()

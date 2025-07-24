@@ -11,7 +11,7 @@ import { SysUserGroup } from './SysUserGroup';
 
 @AclResource('cmn_cost_center')
 @Entity({ tableName: 'cmn_cost_center' })
-export class CmnCostCenter extends Packaged(BaseEntity) {
+export class CmnCostCenter extends Packaged(BaseEntity as any) {
   /** Cost center name */
   @Property({ length: 100 })
   name!: string;

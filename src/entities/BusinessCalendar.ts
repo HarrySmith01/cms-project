@@ -8,7 +8,7 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 
 @AclResource('business_calendar')
 @Entity({ tableName: 'business_calendar' })
-export class BusinessCalendar extends Packaged(BaseEntity) {
+export class BusinessCalendar extends Packaged(BaseEntity as any) {
   /** Calendar type (optional) */
   @Property({ length: 40, nullable: true })
   cal_type?: string;

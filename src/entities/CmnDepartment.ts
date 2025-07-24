@@ -12,7 +12,7 @@ import { SnHrIntegrationsSource } from './SnHrIntegrationsSource';
 
 @AclResource('cmn_department')
 @Entity({ tableName: 'cmn_department' })
-export class CmnDepartment extends Packaged(BaseEntity) {
+export class CmnDepartment extends Packaged(BaseEntity as any) {
   /** Department name */
   @Property({ length: 100 })
   name!: string;

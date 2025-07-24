@@ -1,14 +1,17 @@
 // File: src/entities/SysGlideObject.ts
 // Description: Defines the sys_glide_object table, listing every table/view in the CMS.
 // Created:     2025-07-27T02:30:00+05:30
-// Updated:     2025-07-27T02:30:00+05:30
+// Updated:     2025-07-27T12:00 IST
 
-import { Entity, Property, Index } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/core';
 import { Packaged, BaseEntity, AclResource } from './BaseEntity';
+
+// Workaround: cast BaseEntity to any so Packaged can accept it despite abstract
+const SysGlideObjectBase = Packaged(BaseEntity as any);
 
 @AclResource('sys_glide_object')
 @Entity({ tableName: 'sys_glide_object' })
-export class SysGlideObject extends Packaged(BaseEntity) {
+export class SysGlideObject extends SysGlideObjectBase {
   /** Collection flag (always false for table registry) */
   @Property({ default: false })
   collection: boolean = false;

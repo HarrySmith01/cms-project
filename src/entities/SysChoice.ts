@@ -12,7 +12,7 @@ import { Packaged, BaseEntity, AclResource } from './BaseEntity';
   options: { unique: true },
 })
 @AclResource('sys_choice')
-export class SysChoice extends Packaged(BaseEntity) {
+export class SysChoice extends Packaged(BaseEntity as any) {
   /** Field name this choice applies to */
   @Property({ length: 100 })
   element!: string;

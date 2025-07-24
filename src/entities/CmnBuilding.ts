@@ -10,7 +10,7 @@ import { CmnLocation } from './CmnLocation';
 
 @AclResource('cmn_building')
 @Entity({ tableName: 'cmn_building' })
-export class CmnBuilding extends Packaged(BaseEntity) {
+export class CmnBuilding extends Packaged(BaseEntity as any) {
   /** Primary contact for the building */
   @ManyToOne(() => SysUser, { nullable: true })
   contact?: SysUser;

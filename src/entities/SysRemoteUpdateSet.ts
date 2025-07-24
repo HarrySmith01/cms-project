@@ -11,7 +11,7 @@ import { SysUpdateSetSource } from './SysUpdateSetSource';
 
 @AclResource('sys_remote_update_set')
 @Entity({ tableName: 'sys_remote_update_set' })
-export class SysRemoteUpdateSet extends Packaged(BaseEntity) {
+export class SysRemoteUpdateSet extends Packaged(BaseEntity as any) {
   /** Application this remote set belongs to */
   @ManyToOne(() => SysPackage, { nullable: true })
   application?: SysPackage;
