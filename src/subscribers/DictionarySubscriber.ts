@@ -1,43 +1,53 @@
 /* eslint-disable class-methods-use-this */
 // src/subscribers/DictionarySubscriber.ts
-// Description: Subscriber to listen for SysDictionary create/update/delete and enqueue extension job
+// Description: Subscribes to SysDictionary CRUD events and enqueues a minimal
+//              job onto the BullMQ dictionary-schema queue (dictionaryQueue.ts).
 // Created: 2025-07-23T11:00:00+05:30
-// Updated: 2025-07-25T14:00:00+05:30
+// Updated: 2025-07-25T16:30:00+05:30
 
-import { EntitySubscriberInterface, FlushEventArgs } from '@mikro-orm/core';
+import {
+  EntitySubscriberInterface,
+  EventSubscriber,
+  FlushEventArgs,
+  RemoveEventArgs,
+} from '@mikro-orm/core';
 import { SysDictionary } from '../entities/SysDictionary';
-import { enqueueExtensionJob } from '../jobs/extensionEngine';
+import { dictionaryQueue } from '../queues/dictionaryQueue'; // ⬅ queue + worker combined
 
+@EventSubscriber()
 export class DictionarySubscriber
-implements EntitySubscriberInterface<SysDictionary> {
-  /**
-   * Listen to SysDictionary entity changes
-   */
+  implements EntitySubscriberInterface<SysDictionary>
+{
+  /** Entity this subscriber listens to */
   getSubscribedEntities(): string[] {
     return [SysDictionary.name];
   }
 
-  /**
-   * After a new dictionary entry is created, enqueue a 'create' job
-   */
-  async afterCreate(event: FlushEventArgs): Promise<void> {
-    const dict = event.entity as SysDictionary;
-    await enqueueExtensionJob('create', dict);
+  /** After a new dictionary entry is created, enqueue a “create” job */
+  async afterCreate(event: FlushEventArgs<SysDictionary>): Promise<void> {
+    const dict = event.entity;
+    await dictionaryQueue.add('ddl', {
+      action: 'create',
+      dictId: dict.id,
+    });
   }
 
-  /**
-   * After a dictionary entry is updated, enqueue an 'update' job
-   */
-  async afterUpdate(event: FlushEventArgs): Promise<void> {
-    const dict = event.entity as SysDictionary;
-    await enqueueExtensionJob('update', dict);
+  /** After an existing dictionary entry is updated, enqueue an “update” job */
+  async afterUpdate(event: FlushEventArgs<SysDictionary>): Promise<void> {
+    const dict = event.entity;
+    await dictionaryQueue.add('ddl', {
+      action: 'update',
+      dictId: dict.id,
+    });
   }
 
-  /**
-   * After a dictionary entry is deleted, enqueue a 'delete' job
-   */
-  async afterDelete(event: FlushEventArgs): Promise<void> {
-    const dict = event.entity as SysDictionary;
-    await enqueueExtensionJob('delete', dict);
+  /** After a dictionary entry is deleted, enqueue a “delete” job */
+  async afterDelete(event: RemoveEventArgs<SysDictionary>): Promise<void> {
+    const dict = event.entity;
+    if (!dict) return;
+    await dictionaryQueue.add('ddl', {
+      action: 'delete',
+      dictId: dict.id,
+    });
   }
 }

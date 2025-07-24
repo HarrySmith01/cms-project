@@ -78,7 +78,7 @@ const config = defineConfig({
 });
 
 // Named-export the bits your tests need:
-export { dbType, isMongo, env };
+//export { dbType, isMongo, env };
 
 // Default export remains the full config object:
 export default config;

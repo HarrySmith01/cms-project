@@ -1,0 +1,319 @@
+Files in this folder is responsible for DB seeding but it need to be keep in mind that it is manly created to seed Dictonary table records and object table records and it also create all reference and related records.
+
+
+
+
+
+# Excel/XML-Driven Schema Import: Background & Workflow
+
+## Background & Purpose
+
+* We want to automate ServiceNow–style metadata management in our CMS.
+* Instead of hand-writing migrations *and* seeders for every table/column, we’ll author metadata definitions in Excel/XML and drive both dictionary (**sys\_dictionary**) and DB-object (**sys\_db\_object**) creation/updates from those files.
+* This approach speeds up initial schema setup (first prod install & CI tests) and centralizes all core table & column definitions in easily-editable, version-controlled spreadsheets.
+
+## Key Goals
+
+1. **Metadata-first**: Define tables & columns in Excel/XML, not code.
+2. **Idempotent Upserts**: Re-running against an existing schema updates configs without duplication.
+3. **Dynamic DDL Sync**: Create or alter actual MySQL tables/columns based on metadata.
+4. **CI Determinism**: Pin exactly which definition files ran in CI for reproducible builds.
+5. **Dev-only Execution**: Run this import script only on test & first-install; afterwards, schema changes go through admin panel.
+
+## Workflow Overview
+
+### 1. File Discovery
+
+* **Scan two folders** in project root:
+
+  * `metadata/tables/` — Excel/XML files describing each table.
+  * `metadata/columns/` — Excel/XML files describing each column (sys\_dictionary entries).
+* Each file yields a JSON representation of one table or one column.
+
+### 2. Table Import (sys\_db\_object)
+
+For each parsed table definition:
+
+1. **Find-or-Create** a `sys_db_object` record by `table_name`.
+2. **Update** `label`, `description`, `extends` (if changed).
+3. If `extends` references a parent table, recursively import that parent first.
+4. **DDL Sync**:
+
+   * If this is new or table doesn’t exist, run `metadataSync.createTable(...)` to generate migration or direct DDL.
+   * If existing table but config changed, run `metadataSync.alterTable(...)` to apply label/comment/option changes.
+
+### 3. Column Import (sys\_dictionary)
+
+For each parsed column definition:
+
+1. **Find-or-Create** `sys_dictionary` record by `table_name` + `column_name`.
+2. **Update** all column config fields (type, length, default, UI label, help text, reference table, etc.).
+3. **Map** to the `sys_db_object` record of its `table_name` (foreign key).
+4. **DDL Sync**:
+
+   * If new or actual column missing, run `metadataSync.addColumn(...)` to create it.
+   * If existing but type/length/etc. changed, run `metadataSync.modifyColumn(...)` to update it.
+5. If column is a reference to another table:
+
+   1. Ensure that referenced table’s `sys_db_object` record exists (import it if needed).
+   2. Ensure the actual referenced table exists or create it.
+
+### 4. Idempotency & Safety
+
+* All upserts are **find-or-create**: no duplicate metadata or DB objects.
+* Overwrites existing configs where defined; empties get populated.
+* Only runs in dev/CI or first-prod-install; production uses admin panel.
+
+### 5. CI/CD Integration
+
+* CI pipeline checks out definitions at a pinned commit.
+* Runs the import script before tests.
+* Migration files are generated dynamically (or direct DDL applied), ensuring CI sees the exact schema.
+* Any failure in import fails the build.
+
+## Benefits & Trade-offs
+
+* **Pros**:
+
+  * Single source of truth in spreadsheets/XML.
+  * Faster initial setup; no hand-written migrations.
+  * Clean separation: Devs update metadata files, script drives schema.
+  * CI reproducibility: pinned file set.
+* **Cons**:
+
+  * Complex refactors (renames/splits) still need manual migrations.
+  * No reverse-sync from DB to sheets (one-way import).
+  * Requires strict policy: after first import, schema edits via admin UI only.
+
+---
+
+This plan ensures we leverage Excel/XML definitions to drive both metadata and DDL sync, reducing manual migration burden while preserving schema safety and CI determinism.
+
+
+
+
+
+
+
+
+
+
+
+
+Here’s a step-to-step implementation plan to build your Excel/XML-driven Table & Column importer, reusing your existing dynamic DDL engine and the `sys_db_object` / `sys_dictionary` metadata tables.
+
+---
+
+## 1. Project Structure & Bootstrapping
+
+1. **Create a new CLI entry point**
+
+   * `src/cli/schema-import.ts`
+   * Wire up with `package.json` scripts:
+
+     ```json
+     "scripts": {
+       "import:tables": "ts-node src/cli/schema-import.ts tables",
+       "import:columns": "ts-node src/cli/schema-import.ts columns"
+     }
+     ```
+2. **Directory layout**
+
+   ```
+   /definitions
+     /tables       ← all your table‐definition .xlsx/.xml files
+     /columns      ← all your column‐definition .xlsx/.xml files
+   src/
+     cli/
+       schema-import.ts
+     services/
+       tableImporter.ts
+       columnImporter.ts
+       parsers/
+         tableParser.ts
+         columnParser.ts
+       metadataSync/   ← your existing DDL engine
+         createTable.ts
+         alterTable.ts
+         createColumn.ts
+         alterColumn.ts
+   ```
+
+---
+
+## 2. Parsers
+
+* **`tableParser.ts`**
+
+  * Read XLSX (e.g. via `xlsx` npm) or XML (e.g. `fast-xml-parser`)
+  * Map each file to:
+
+    ```ts
+    interface TableDef {
+      tableName: string;
+      label: string;
+      description?: string;
+      extends?: string;
+      engine?: string;
+      charset?: string;
+      audited?: boolean;
+      // any other props...
+    }
+    ```
+* **`columnParser.ts`**
+
+  * Similarly produce:
+
+    ```ts
+    interface ColumnDef {
+      tableName: string;      // parent table
+      columnName: string;
+      type: string;           // e.g. varchar(255)
+      nullable: boolean;
+      default?: string;
+      label?: string;
+      referenceTable?: string;
+      // …
+    }
+    ```
+
+---
+
+## 3. Table Importer Service
+
+Implement `tableImporter.ts` with two exported functions:
+
+### 3.1 `bootstrapTable(def: TableDef)`
+
+1. **Recursion**
+
+   ```ts
+   if (def.extends) {
+     const parentDef = loadTableDef(def.extends);
+     await bootstrapTable(parentDef);
+   }
+   ```
+2. **Upsert `SysDbObject`**
+
+   * `findOne({ name })` → update mutable fields → `persistAndFlush()`
+   * if not found → `create()` → `persistAndFlush()`
+3. **DDL Sync**
+
+   ```ts
+   if (!await metadataSync.hasTable(def.tableName)) {
+     await metadataSync.createTable(def);
+   } else {
+     await metadataSync.alterTable(def);
+   }
+   ```
+
+### 3.2 `importAllTables()`
+
+```ts
+export async function importAllTables() {
+  const files = fs.readdirSync(defDir + '/tables');
+  for (const f of files) {
+    const def = parseTableFile(f);
+    await orm.em.transactional(async () => {
+      await bootstrapTable(def);
+    });
+  }
+}
+```
+
+---
+
+## 4. Column Importer Service
+
+Implement `columnImporter.ts` mirroring the table flow:
+
+1. **Parse** all column files into `ColumnDef[]`.
+
+2. **For each** `colDef`:
+
+   * **Ensure parent table** exists in metadata & physical DB (can call `bootstrapTable` to be safe).
+   * **Upsert `SysDictionary`**: findOne by `{ table: ., column: . }`, update vs. create.
+   * **DDL Sync**:
+
+     ```ts
+     if (!await metadataSync.hasColumn(colDef)) {
+       await metadataSync.createColumn(colDef);
+     } else {
+       await metadataSync.alterColumn(colDef);
+     }
+     ```
+
+3. **Wrap** each in a transaction so partial failure won’t leave you mid-migrate.
+
+---
+
+## 5. CLI Orchestration
+
+In `schema-import.ts`:
+
+```ts
+import { importAllTables } from '../services/tableImporter';
+import { importAllColumns } from '../services/columnImporter';
+
+const mode = process.argv[2];
+if (mode === 'tables') {
+  await importAllTables();
+} else if (mode === 'columns') {
+  await importAllColumns();
+} else {
+  console.error('Usage: import tables|columns');
+  process.exit(1);
+}
+```
+
+---
+
+## 6. Testing & Idempotency
+
+* **Unit tests** for parsers with sample XLSX/XML.
+* **Integration tests** against an in-memory or test MySQL:
+
+  * Run `import:tables`, then `import:columns` twice → assert no new DDL runs on second pass.
+  * Rename a definition (e.g. change label) → re-run → assert metadata updated, no table re-creation.
+
+---
+
+## 7. CI Integration
+
+* Add new steps to `ci.yml` after migrations:
+
+  ```yaml
+      - name: Import Tables
+        run: npm run import:tables
+
+      - name: Import Columns
+        run: npm run import:columns
+  ```
+
+* Pin your definitions folder in source control so changes to definitions are always versioned.
+
+---
+
+## 8. Rollout & Documentation
+
+1. **Document** folder structure and naming conventions for XLSX/XML.
+2. **Provide** sample template files with all required headers.
+3. **Train** your team:
+
+   * “To add a table, drop `my_table.xlsx` into `/definitions/tables` and commit.”
+   * “To add columns, update `/definitions/columns/*.xlsx`, then CI will pick it up.”
+
+---
+
+### Why This Works
+
+* **Single Source of Truth** — your Excel/XML files are now canonical.
+* **Idempotent & Transactional** — re-running won’t blow away data.
+* **Recursive “extends”** ensures parent tables always exist first.
+* **Metadata + Physical Sync** — `sys_db_object` stays in lockstep with real tables.
+* **CI Determinism** — definitions live in Git; every pipeline run uses the same versions.
+
+With this plan in place, you’ll get automated, metadata-driven schema creation/updates **without** hand-crafting each migration, yet still retain full control, auditability, and safety.
+
+To Impliment this You can take a look of DictionarySubscriber.ts and another file it is calling. this file is also doing some similar work and you can add scripts or imporove it to get your work done. 
+This file also needs some improvement that I have mentioned below .

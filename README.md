@@ -118,3 +118,31 @@ npm run db:setup:prod # Create only prod DB
 
 npm run migration:up:dev # Run dev migrations
 npm run migration:down:test # Roll back test migration
+
+npm run import:tables
+npm run import:columns
+
+# 1) One-time start (creates the PM2 processes)
+
+pm2 start ecosystem.config.js
+
+# 2) Check that both workers are online
+
+pm2 ls # or: pm2 status
+
+# 3) Tail live log output from both workers
+
+pm2 logs # stream everything
+
+# or individually:
+
+pm2 logs dict-worker --lines 100 # last 100 lines
+pm2 logs table-worker --lines 100
+
+# 4) Restart workers after pulling new code
+
+npm run build # re-compile TypeScript → dist
+pm2 restart ecosystem.config.js # reload both
+
+pm2 restart ecosystem.config.js
+pm2 ls # dict-worker and table-worker should show “online”

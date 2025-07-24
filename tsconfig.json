@@ -23,7 +23,7 @@
 
   "exclude": [
     "node_modules",
-    "src/jobs",
+    "src/wueues",
     "src/runtime",
     "src/subscribers",
     "tests",
