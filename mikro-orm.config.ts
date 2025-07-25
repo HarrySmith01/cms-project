@@ -1,10 +1,10 @@
-// mikro-orm.config.ts
+// File: mikro-orm.config.ts
 /**
  * File: mikro-orm.config.ts
  * Description: MikroORM configuration with dual-DB support (MySQL | MongoDB),
- *              now selecting embedded relations for Mongo collections.
+ *              now selecting embedded relations for Mongo collections, and using custom naming strategy.
  * Created:    2025-07-22T10:00:00+05:30
- * Updated:    2025-07-24T09:45:00+05:30
+ * Updated:    2025-07-27T23:00:00+05:30
  */
 
 /* eslint-disable */
@@ -13,6 +13,7 @@ import { config as loadEnv } from 'dotenv';
 import { defineConfig } from '@mikro-orm/mysql';
 import { MySqlDriver } from '@mikro-orm/mysql';
 import { MongoDriver } from '@mikro-orm/mongodb';
+import MikroColumnNaming from './src/config/MikroColumnNaming';
 // import { DictionarySubscriber } from './src/subscribers/DictionarySubscriber';
 
 //
@@ -55,7 +56,7 @@ const config = defineConfig({
   //
   // 5) Relation mapping
   //
-  relations: relationStrategy, // <-- NEW
+  relations: relationStrategy,
 
   //
   // 6) Logging & debug
@@ -80,6 +81,11 @@ const config = defineConfig({
     path: './src/seeders',
     defaultSeeder: 'DatabaseSeeder',
   },
+
+  //
+  // 9) Custom naming strategy
+  //
+  namingStrategy: MikroColumnNaming,
 
   // subscribers: [DictionarySubscriber], // re-enable when ready
 });

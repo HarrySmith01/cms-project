@@ -1,7 +1,9 @@
 // File: src/entities/SysDbObject.ts
 // Description: Defines the sys_db_object table, storing table-level permissions and behavior.
+//              Adds explicit 'name' string column for table name and proper SysGlideObject reference.
 // Created:     2025-07-26T01:35:00+05:30
-// Updated:     2025-07-26T12:00 IST
+// Updated:     2025-07-25T17:10 IST
+
 import { Entity, Property, ManyToOne, Index } from '@mikro-orm/core';
 import { Packaged, BaseEntity, AclResource } from './BaseEntity';
 import { SysGlideObject } from './SysGlideObject';
@@ -14,13 +16,20 @@ const SysDbObjectBase = Packaged(BaseEntity as any);
 @AclResource('sys_db_object')
 @Entity({ tableName: 'sys_db_object' })
 export class SysDbObject extends SysDbObjectBase {
+  /** Table name (unique identifier for this DB object) */
+  @Property({ length: 80, unique: true })
+  name!: string;
+
+  /** Reference to field-type metadata in sys_glide_object */
+  @ManyToOne(() => SysGlideObject, {
+    nullable: false,
+    joinColumn: 'glide_object_sys_id',
+  })
+  glideObject!: SysGlideObject;
+
   /** Collection flag (always false here) */
   @Property({ default: false })
   collection: boolean = false;
-
-  /** Table name reference */
-  @ManyToOne(() => SysGlideObject, { nullable: false })
-  name!: SysGlideObject;
 
   /** Accessible from (“public” / scope) */
   @Property({ length: 40, default: 'public' })
@@ -47,7 +56,10 @@ export class SysDbObject extends SysDbObjectBase {
   actions_access: boolean = false;
 
   /** Auto-number reference */
-  @ManyToOne(() => BatchInstallPlan, { nullable: true })
+  @ManyToOne(() => BatchInstallPlan, {
+    nullable: true,
+    joinColumn: 'number_ref_sys_id',
+  })
   number_ref?: BatchInstallPlan;
 
   /** Caller-access dropdown */
@@ -75,7 +87,10 @@ export class SysDbObject extends SysDbObjectBase {
   create_access_controls: boolean = false;
 
   /** Extends table reference (self-M2O) */
-  @ManyToOne(() => SysDbObject, { nullable: true })
+  @ManyToOne(() => SysDbObject, {
+    nullable: true,
+    joinColumn: 'super_class_sys_id',
+  })
   super_class?: SysDbObject;
 
   /** Whether this table is extendable */
@@ -115,6 +130,9 @@ export class SysDbObject extends SysDbObjectBase {
   sys_class_path?: string;
 
   /** User-role reference for table ACL */
-  @ManyToOne(() => SysUserRole, { nullable: true })
+  @ManyToOne(() => SysUserRole, {
+    nullable: true,
+    joinColumn: 'user_role_sys_id',
+  })
   user_role?: SysUserRole;
 }

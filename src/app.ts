@@ -4,7 +4,7 @@
  *              sets up middleware (parsing, security, sessions), configures Passport,
  *              mounts routes, and starts the server.
  * Created: July 25, 2025 00:20 IST
- * Updated: July 25, 2025 11:30 IST
+ * Updated: 2025-07-27 10:00 IST
  */
 
 import 'dotenv/config';
@@ -17,7 +17,7 @@ import morgan from 'morgan';
 import { MikroORM, EntityManager } from '@mikro-orm/core';
 import ormConfig from '../mikro-orm.config';
 import { setupPassport } from './services/auth.service';
-import authRouter from './routes/auth';
+// Auth routes are now mounted in dynamicRouter
 import dynamicRouter from './routes/dynamicRouter';
 
 async function createApp() {
@@ -52,8 +52,7 @@ async function createApp() {
   // 5. Configure Passport strategies
   setupPassport(em);
 
-  // 6. Mount routes
-  app.use('/api/auth', authRouter);
+  // 6. Mount all API routes under /api via dynamicRouter
   app.use('/api', dynamicRouter);
 
   return { app, orm };
