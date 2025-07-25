@@ -1,4 +1,4 @@
-// File: src/utils/runtime/MetadataCache.ts
+// File: src/utils/runtime/SchemaMetadataCache.ts
 /**
  * Description: Caches table, column, and metadata definitions from sys_db_object,
  *              sys_dictionary, and sys_metadata, supporting inheritance.
@@ -11,7 +11,7 @@ import { SysDbObject } from '../../entities/SysDbObject';
 import { SysDictionary } from '../../entities/SysDictionary';
 import { SysMetadata } from '../../entities/SysMetadata';
 
-export class MetadataCache {
+export class SchemaMetadataCache {
   private em: EntityManager;
 
   private tables = new Map<string, SysDbObject>();

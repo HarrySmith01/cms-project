@@ -61,7 +61,7 @@
   - runtime/
     - DynamicRecord.js
     - GlideRecord.js
-    - metadataCache.js
+    - SchemaMetadataCache.js
   - scripts/
     - debug-by-entity.js
     - debug-entities.js
@@ -78,6 +78,7 @@
     - tableImporter.js
   - src/
     - entities/
+      - BaseEntity.js
       - BatchInstallPlan.js
       - BusinessCalendar.js
       - CmnBuilding.js
@@ -129,7 +130,7 @@
     - runtime/
       - DynamicRecord.js
       - GlideRecord.js
-      - metadataCache.js
+      - SchemaMetadataCache.js
     - subscribers/
       - DictionarySubscriber.js
     - utils/
@@ -196,6 +197,72 @@
   - console-2025-07-24T12-37-25-760Z.log
   - console-2025-07-24T12-37-25-763Z.log
   - console-2025-07-24T12-37-25-766Z.log
+  - console-2025-07-24T17-08-09-245Z.log
+  - console-2025-07-24T17-08-09-247Z.log
+  - console-2025-07-24T17-08-09-252Z.log
+  - console-2025-07-24T17-08-09-257Z.log
+  - console-2025-07-24T17-08-09-258Z.log
+  - console-2025-07-24T17-08-09-259Z.log
+  - console-2025-07-24T17-08-09-260Z.log
+  - console-2025-07-24T17-08-09-261Z.log
+  - console-2025-07-24T17-08-09-263Z.log
+  - console-2025-07-24T17-08-09-264Z.log
+  - console-2025-07-24T18-32-59-069Z.log
+  - console-2025-07-24T18-32-59-081Z.log
+  - console-2025-07-24T18-32-59-089Z.log
+  - console-2025-07-24T18-32-59-092Z.log
+  - console-2025-07-24T18-32-59-093Z.log
+  - console-2025-07-24T18-32-59-094Z.log
+  - console-2025-07-24T18-32-59-095Z.log
+  - console-2025-07-24T18-32-59-098Z.log
+  - console-2025-07-24T18-32-59-099Z.log
+  - console-2025-07-24T20-19-49-331Z.log
+  - console-2025-07-24T20-19-49-342Z.log
+  - console-2025-07-24T20-19-49-344Z.log
+  - console-2025-07-24T20-19-49-345Z.log
+  - console-2025-07-24T20-19-49-346Z.log
+  - console-2025-07-24T20-19-49-348Z.log
+  - console-2025-07-24T20-19-49-349Z.log
+  - console-2025-07-24T20-19-49-351Z.log
+  - console-2025-07-24T20-19-49-358Z.log
+  - console-2025-07-24T20-19-49-361Z.log
+  - console-2025-07-24T20-19-49-365Z.log
+  - console-2025-07-24T20-21-27-719Z.log
+  - console-2025-07-24T20-21-27-722Z.log
+  - console-2025-07-24T20-21-27-723Z.log
+  - console-2025-07-24T20-21-27-732Z.log
+  - console-2025-07-24T20-21-27-733Z.log
+  - console-2025-07-24T20-21-27-735Z.log
+  - console-2025-07-24T20-21-27-736Z.log
+  - console-2025-07-24T20-21-27-739Z.log
+  - console-2025-07-24T20-21-27-740Z.log
+  - console-2025-07-24T20-21-27-743Z.log
+  - console-2025-07-24T20-21-27-744Z.log
+  - console-2025-07-24T20-22-41-547Z.log
+  - console-2025-07-24T20-22-41-552Z.log
+  - console-2025-07-24T20-22-41-555Z.log
+  - console-2025-07-24T20-22-41-558Z.log
+  - console-2025-07-24T20-22-41-560Z.log
+  - console-2025-07-24T20-22-41-562Z.log
+  - console-2025-07-24T20-22-41-567Z.log
+  - console-2025-07-24T20-22-41-569Z.log
+  - console-2025-07-24T20-22-41-570Z.log
+  - console-2025-07-24T21-13-00-153Z.log
+  - console-2025-07-24T21-13-00-155Z.log
+  - console-2025-07-24T21-13-00-156Z.log
+  - console-2025-07-24T21-13-00-157Z.log
+  - console-2025-07-24T21-13-00-161Z.log
+  - console-2025-07-24T21-13-00-165Z.log
+  - console-2025-07-24T21-13-00-170Z.log
+  - console-2025-07-24T21-13-00-175Z.log
+  - console-2025-07-24T21-13-00-176Z.log
+  - console-2025-07-24T21-13-00-178Z.log
+  - console-2025-07-24T21-13-00-179Z.log
+  - console-2025-07-24T21-13-23-557Z.log
+  - console-2025-07-24T21-16-35-807Z.log
+  - console-2025-07-24T21-18-48-343Z.log
+  - console-2025-07-24T21-19-11-808Z.log
+  - console-2025-07-24T21-20-17-451Z.log
   - test-log-2025-07-24T09-36-20-224Z.log
   - test-log-2025-07-24T09-40-49-336Z.log
   - test-log-2025-07-24T09-42-35-953Z.log
@@ -203,6 +270,17 @@
   - test-log-2025-07-24T09-50-18-497Z.log
   - test-log-2025-07-24T12-32-07-175Z.log
   - test-log-2025-07-24T12-37-25-049Z.log
+  - test-log-2025-07-24T17-08-08-505Z.log
+  - test-log-2025-07-24T18-32-58-359Z.log
+  - test-log-2025-07-24T20-19-48-571Z.log
+  - test-log-2025-07-24T20-21-26-957Z.log
+  - test-log-2025-07-24T20-22-40-780Z.log
+  - test-log-2025-07-24T21-12-59-225Z.log
+  - test-log-2025-07-24T21-13-23-343Z.log
+  - test-log-2025-07-24T21-16-35-596Z.log
+  - test-log-2025-07-24T21-18-48-116Z.log
+  - test-log-2025-07-24T21-19-11-595Z.log
+  - test-log-2025-07-24T21-20-17-229Z.log
 - migrations/
   - Migration20250724061304.ts
 - mikro-orm.config - Bakcup.ts
@@ -217,6 +295,7 @@
   - debug-entities.ts
   - debug-entity-load.ts
 - src/
+  - app.ts
   - cli/
     - schema-import.ts
   - entities/
@@ -269,19 +348,24 @@
   - queues/
     - dictionaryQueue.ts
     - tableQueue.ts
-  - runtime/
-    - DynamicRecord.ts
-    - GlideRecord.ts
-    - metadataCache.ts
+  - routes/
+    - auth.ts
+    - dynamicRouter.ts
   - seeders/
     - InitialSeeder.ts
   - services/
+    - auth.service.ts
     - columnImporter.ts
     - metadataSync/
       - aclSync.ts
+      - columnFacade.ts
       - columnSync.ts
+      - ddlFacade.ts
       - logSchemaError.ts
-      - tableSync.ts
+      - mongoColumnSync.ts
+      - mongoDdlSync.ts
+      - mysqlColumnSync.ts
+      - mysqlDdlSync.ts
     - parsers/
       - columnParser.ts
       - info.txt
@@ -292,9 +376,20 @@
     - TableSubscriber.ts
   - utils/
     - db-compat.ts
+    - dbContext.ts
+    - metadataCache.ts
+    - migrationFacade.ts
     - orm-init.ts
+    - runtime/
+      - DynamicRecord.ts
+      - GlideRecord.ts
+      - SchemaMetadataCache.ts
+    - tableCrud.ts
     - typeMapper.ts
 - tests/
+  - auth/
+    - jwt.test.ts
+    - passport.test.ts
   - ci-trigger.test.ts
   - code-quality.test.js
   - db-compat.test.ts
@@ -308,6 +403,7 @@
   - logger-reporter.js
   - metadataSync/
     - aclSync.test.ts
+    - ddlFacade.test.ts
   - migrations/
     - initial.test.ts
     - metadataSync/

@@ -1,15 +1,15 @@
 // File: src/utils/metadataCache.ts
 /**
- * Description: Singleton wrapper around the runtime MetadataCache,
+ * Description: Singleton wrapper around the runtime SchemaMetadataCache,
  *              providing an `ensureCache` method and delegating lookups.
  * Created: July 25, 2025 02:30 IST
- * Updated: July 25, 2025 08:50 IST
+ * Updated: July 25, 2025 16:20 IST
  */
 
 import { EntityManager } from '@mikro-orm/core';
-import { MetadataCache as RuntimeCache } from './runtime/MetadataCache';
+import { SchemaMetadataCache as RuntimeCache } from './runtime/SchemaMetadataCache';
 
-class MetadataCacheWrapper {
+class SchemaMetadataCacheWrapper {
   private cache?: RuntimeCache;
 
   /**
@@ -39,4 +39,4 @@ class MetadataCacheWrapper {
   }
 }
 
-export const metadataCache = new MetadataCacheWrapper();
+export const metadataCache = new SchemaMetadataCacheWrapper();

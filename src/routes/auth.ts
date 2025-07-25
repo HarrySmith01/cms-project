@@ -1,23 +1,51 @@
 // File: src/routes/auth.ts
-/**
- * Description: Defines authentication endpoints: local login, OAuth2 callback, logout, and token refresh.
- * Created: July 25, 2025 01:05 IST
- * Updated: July 25, 2025 12:00 IST
- */
+// Full Path: src/routes/auth.ts
+// Description: Defines authentication endpoints: registration, login (with JWT), OAuth2, logout, and token refresh.
+// Created: 2025-07-25 01:05 IST
+// Updated: 2025-07-25 15:00 IST
 
 import { Router, Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import { MikroORM } from '@mikro-orm/core';
-import { refreshAccessToken } from '../services/auth.service';
 import ormConfig from '../../mikro-orm.config';
+import { refreshAccessToken } from '../services/auth.service';
+import UserService from '../services/user.service';
 
 const router = Router();
 
-// POST /api/auth/login — Local (Basic) authentication
+// POST /api/auth/register — User registration
+router.post(
+  '/register',
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const orm = await MikroORM.init(ormConfig);
+      const em = orm.em.fork();
+      const user = await UserService.register(em, req.body);
+      return res.status(201).json(user);
+    } catch (err) {
+      return next(err);
+    }
+  }
+);
+
+// POST /api/auth/login — Login with JWT generation
 router.post(
   '/login',
-  passport.authenticate('local', { session: true }),
-  (req: Request, res: Response) => res.json({ user: req.user })
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userName, password } = req.body;
+      const orm = await MikroORM.init(ormConfig);
+      const em = orm.em.fork();
+      const { user, accessToken, refreshToken } = await UserService.login(
+        em,
+        userName,
+        password
+      );
+      return res.json({ user, accessToken, refreshToken });
+    } catch (err) {
+      return next(err);
+    }
+  }
 );
 
 // GET /api/auth/oauth2 — initiate OAuth2 flow
@@ -44,10 +72,8 @@ router.post('/logout', (req: Request, res: Response, next: NextFunction) => {
 router.post('/refresh', async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
   try {
-    // Initialize ORM and fork EM for this request
     const orm = await MikroORM.init(ormConfig);
     const em = orm.em.fork();
-
     const tokens = await refreshAccessToken(em, refreshToken);
     return res.json(tokens);
   } catch (err) {
